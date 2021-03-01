@@ -8,7 +8,7 @@ import java.util.List;
 public interface EmailAuthCodeRepository extends JpaRepository<EmailAuthCode, Long> {
     @Query(
             nativeQuery = true,
-            value = "select * from email_auth_code where is_can_use = true AND auth_number = :auth_number"
+            value = "select * from EmailAuthCode where isCanUse = true AND authNumber = :auth_number"
     )
     EmailAuthCode findByAuthNumber(int auth_number);
 
@@ -16,13 +16,13 @@ public interface EmailAuthCodeRepository extends JpaRepository<EmailAuthCode, Lo
 
     @Query(
             nativeQuery = true,
-            value = "select * from email_auth_code where is_can_use = true AND secret = :secret order by id DESC"
+            value = "select * from EmailAuthCode where isCanUse = true AND secret = :secret order by id DESC"
     )
     List<EmailAuthCode> findAllBySecretOrderByIdDesc(String secret);
 
     @Query(
             nativeQuery = true,
-            value = "select * from email_auth_code where is_can_use = true order by id DESC"
+            value = "select * from EmailAuthCode where isCanUse = true order by id DESC"
     )
     List<EmailAuthCode> findAllByCanUse();
 }

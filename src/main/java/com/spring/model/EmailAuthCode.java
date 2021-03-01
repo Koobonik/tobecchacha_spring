@@ -11,32 +11,32 @@ import java.text.ParseException;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity(name = "email_auth_code")
+@Entity
 public class EmailAuthCode {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name = "user_id", columnDefinition = "INT(11)")
+    @Column(columnDefinition = "INT(11)")
     private long userId;
 
-    @Column(name = "auth_number", nullable = false)
+    @Column(nullable = false)
     private int authNumber;
 
-    @Column(name = "created_date", nullable = false, columnDefinition = "datetime")
+    @Column(nullable = false, columnDefinition = "datetime")
     private Timestamp createdDate;
 
-    @Column(name = "certified_date", columnDefinition = "datetime")
+    @Column(columnDefinition = "datetime")
     private Timestamp certifiedDate;
 
-    @Column(name = "is_can_use", nullable = false, columnDefinition = "TINYINT(4)")
+    @Column(nullable = false, columnDefinition = "TINYINT(4)")
     private boolean isCanUse = true;
 
-    @Column(name = "secret", nullable = false, columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String secret;
 
-    @Column(name = "where_to_use", columnDefinition = "VARCHAR(30)")
+    @Column(columnDefinition = "VARCHAR(30)")
     private String whereToUse;
 
     public EmailAuthCode(int authNumber) throws ParseException {
