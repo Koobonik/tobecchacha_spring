@@ -28,8 +28,8 @@ import java.util.stream.Collectors;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        entityManagerFactoryRef = "dondaEntityManager",
-        transactionManagerRef = "dondaTransactionManager",
+        entityManagerFactoryRef = "helloKoreanEntityManager",
+        transactionManagerRef = "helloKoreanTransactionManager",
         basePackages = "com.spring.model"
 )
 public class DBConfig {
@@ -42,10 +42,10 @@ public class DBConfig {
 //        hikariDataSource.addDataSourceProperty("useSSL", true);
 //        hikariDataSource.addDataSourceProperty("requireSSL", true);
 //        hikariDataSource.addDataSourceProperty("verifyServerCertificate", true);
-        hikariDataSource.setDriverClassName(applicationYamlRead.getDonda_driver_class_name());
-        hikariDataSource.setJdbcUrl(applicationYamlRead.getDonda_url());
-        hikariDataSource.setUsername(applicationYamlRead.getDonda_username());
-        hikariDataSource.setPassword(applicationYamlRead.getDonda_password());
+        hikariDataSource.setDriverClassName(applicationYamlRead.getHello_korean_driver_class_name());
+        hikariDataSource.setJdbcUrl(applicationYamlRead.getHello_korean_url());
+        hikariDataSource.setUsername(applicationYamlRead.getHello_korean_username());
+        hikariDataSource.setPassword(applicationYamlRead.getHello_korean_password());
 //        DriverManagerDataSource dataSource = new DriverManagerDataSource();
         System.out.println("잘되나 test");
 //        dataSource.setDriverClassName(env.getProperty("spring.donda.datasource.driver-class-name"));
@@ -56,7 +56,7 @@ public class DBConfig {
     }
 
 
-    @Bean(name = "dondaEntityManager")
+    @Bean(name = "helloKoreanEntityManager")
     public LocalContainerEntityManagerFactoryBean mysqlEntityManagerFactory(EntityManagerFactoryBuilder builder) {
         Map<String, Object> properties = new HashMap<String, Object>();
         // yml이나 properties에서도 써줄 수 있지만 여러 디비를 관리하다보면 밑에와같이 쓸 수 있습니다.
@@ -74,8 +74,8 @@ public class DBConfig {
     }
 
 
-    @Bean(name = "dondaTransactionManager")
-    public PlatformTransactionManager mysqlTransactionManager(@Qualifier("dondaEntityManager") EntityManagerFactory entityManagerFactory) {
+    @Bean(name = "helloKoreanTransactionManager")
+    public PlatformTransactionManager mysqlTransactionManager(@Qualifier("helloKoreanEntityManager") EntityManagerFactory entityManagerFactory) {
         return new JpaTransactionManager(entityManagerFactory);
     }
 
