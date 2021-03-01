@@ -1,6 +1,6 @@
 package com.spring.service;
 
-import com.spring.model.ExampleUserRepository;
+import com.spring.model.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDetailService implements UserDetailsService {
 
-    private final ExampleUserRepository exampleUserRepository;
+    private final UsersRepository usersRepository;
 
     @Override
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
-        return exampleUserRepository.findByUserLoginId(id);
+        return usersRepository.findByUserEmail(id);
     }
 }

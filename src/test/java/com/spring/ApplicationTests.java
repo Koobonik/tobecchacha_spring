@@ -24,7 +24,7 @@ class ApplicationTests {
     @Test
     public void sendEmail() throws Exception {
         // 변수는 차례대로 받는사람의 메일주소, 제목, 내용 입니다.
-        emailService.sendEmail(new EmailSenderRequestDto("받는사람이메일주소@naver.com", "안녕하십니까", "잘 보내집니다."));
+        emailService.sendEmail(new EmailSenderRequestDto("kbi960130@naver.com", "안녕하십니까", "잘 보내집니다."));
     }
 
     @Autowired

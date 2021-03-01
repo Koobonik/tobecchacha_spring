@@ -1,5 +1,6 @@
 package com.spring.util.jwt;
 
+import com.spring.model.Users;
 import com.spring.util.PemReader;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -106,5 +107,8 @@ public class JwtTokenProvider {
             return false;
         }
     }
-
+    public Users getPetmilyUsersFromToken(HttpServletRequest httpServletRequest){
+        String token = this.resolveToken(httpServletRequest);
+        return (Users) this.getAuthentication(token).getPrincipal();
+    }
 }

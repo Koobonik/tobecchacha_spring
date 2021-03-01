@@ -1,6 +1,9 @@
 package com.spring.util;
 
+import com.spring.util.yml.ApplicationAESRead;
+import lombok.Getter;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
@@ -9,35 +12,42 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
+@Getter
+@Component
 public class AES256Cipher {
-
     private static volatile AES256Cipher INSTANCE;
 
-    final static String secretKey = ""; //32bit
-    static String IV = ""; //16bit
+    private final ApplicationAESRead applicationAESRead;
 
-    public static AES256Cipher getInstance() {
-        if (INSTANCE == null) {
-            synchronized (AES256Cipher.class) {
-                if (INSTANCE == null)
-                    INSTANCE = new AES256Cipher();
-            }
-        }
-        return INSTANCE;
-    }
 
-    private AES256Cipher() {
+    private String secretKey; //32bit
+    private String IV; //16bit
+
+//    public AES256Cipher getInstance() {
+//        if (INSTANCE == null) {
+//            synchronized (AES256Cipher.class) {
+//                if (INSTANCE == null)
+//                    INSTANCE = new AES256Cipher();
+//            }
+//        }
+//        return INSTANCE;
+//    }
+
+    public AES256Cipher(ApplicationAESRead applicationAESRead) {
+        this.secretKey = applicationAESRead.getSecretkey();
+        this.IV = applicationAESRead.getIv();
+        this.applicationAESRead = applicationAESRead;
         //IV = secretKey.substring(0,16);
     }
 
     //암호화
-    public static String AES_Encode(String str) throws java.io.UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
-        byte[] keyData = secretKey.getBytes();
+    public String AES_Encode(String str) throws java.io.UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+        byte[] keyData = this.secretKey.getBytes();
 
         SecretKey secureKey = new SecretKeySpec(keyData, "AES");
 
         Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        c.init(Cipher.ENCRYPT_MODE, secureKey, new IvParameterSpec(IV.getBytes()));
+        c.init(Cipher.ENCRYPT_MODE, secureKey, new IvParameterSpec(this.IV.getBytes()));
 
         byte[] encrypted = c.doFinal(str.getBytes("UTF-8"));
         String enStr = new String(Base64.encodeBase64(encrypted));
@@ -46,11 +56,11 @@ public class AES256Cipher {
     }
 
     //복호화
-    public static String AES_Decode(String str) throws java.io.UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
-        byte[] keyData = secretKey.getBytes();
+    public String AES_Decode(String str) throws java.io.UnsupportedEncodingException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, IllegalBlockSizeException, BadPaddingException {
+        byte[] keyData = this.secretKey.getBytes();
         SecretKey secureKey = new SecretKeySpec(keyData, "AES");
         Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        c.init(Cipher.DECRYPT_MODE, secureKey, new IvParameterSpec(IV.getBytes("UTF-8")));
+        c.init(Cipher.DECRYPT_MODE, secureKey, new IvParameterSpec(this.IV.getBytes("UTF-8")));
 
         byte[] byteStr = Base64.decodeBase64(str.getBytes());
 

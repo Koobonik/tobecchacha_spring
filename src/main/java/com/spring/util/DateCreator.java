@@ -60,4 +60,12 @@ public class DateCreator {
         System.out.println(this.zonedDateTime.toLocalDateTime());
         return this.zonedDateTime.toLocalDateTime().toString().substring(0, 19);
     }
+
+    public Timestamp getAfterThreeMinutes(Timestamp timestamp){
+        long oneWeek = 60*3*1000L;
+        long afterOneWeek = timestamp.getTime();
+        afterOneWeek += oneWeek;
+        Timestamp untilDate = new Timestamp(afterOneWeek);
+        return untilDate;
+    }
 }
