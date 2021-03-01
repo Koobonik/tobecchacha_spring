@@ -9,7 +9,7 @@ echo "> 프로젝트 Build 시작"
 
 echo "> 현재 구동중인 애플리케이션 pid 확인"
 
-CURRENT_PID=$(pgrep -f spring)
+CURRENT_PID=$(pgrep -f hellokorean)
 
 echo "$CURRENT_PID"
 
@@ -27,4 +27,4 @@ JAR_NAME=$(ls / |grep 'Server' | tail -n 1)
 
 echo "> JAR Name: $JAR_NAME"
 
-java -jar build/libs/spring-0.0.1-SNAPSHOT.jar &
+java -jar build/libs/hellokorean-0.0.1-SNAPSHOT.jar &
