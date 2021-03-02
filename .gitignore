@@ -22,6 +22,7 @@ build/
 out/
 *.yml
 *.pem
+/src/main/resources/application.properties
 
 ### NetBeans ###
 /nbproject/private/
