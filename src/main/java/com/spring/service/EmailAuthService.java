@@ -72,6 +72,7 @@ public class EmailAuthService {
         }
         EmailAuthCode emailAuthCode = new EmailAuthCode(getSecureNumber());
         emailAuthCode.setWhereToUse("이메일인증");
+        emailAuthCode.setCanUse(true);
         emailAuthCode.setSecret(createSecret(emailRequestDto.getRecipient(), emailAuthCode.getAuthNumber()));
         if(emailServiceImpl.sendSimpleMessage(emailRequestDto.getRecipient(), "[HelloKorean]This is email for auth number",
                 "auth number : [" + emailAuthCode.getAuthNumber() + "]please input in your app")){
