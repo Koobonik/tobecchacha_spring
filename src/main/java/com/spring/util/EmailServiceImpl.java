@@ -1,19 +1,22 @@
 package com.spring.util;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 
 @Component
+@RequiredArgsConstructor
 public class EmailServiceImpl {
 
-    JavaMailSender emailSender;
+    private final JavaMailSender emailSender;
 
-    public void setJavaMailSender(JavaMailSender javaMailSender) {
-        this.emailSender = javaMailSender;
-    }
+//    public void setJavaMailSender(JavaMailSender javaMailSender) {
+//        this.emailSender = javaMailSender;
+//    }
 
     public boolean sendSimpleMessage(String to, String subject, String text) {
 
