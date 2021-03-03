@@ -10,7 +10,7 @@ public interface EmailAuthCodeRepository extends JpaRepository<EmailAuthCode, Lo
             nativeQuery = true,
             value = "select * from EmailAuthCode where isCanUse = true AND authNumber = :auth_number"
     )
-    EmailAuthCode findByAuthNumber(int auth_number);
+    EmailAuthCode findByAuthNumber(String auth_number);
 
     EmailAuthCode findBySecret(String secret);
 

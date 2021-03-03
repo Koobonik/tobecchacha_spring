@@ -2,6 +2,8 @@ package com.spring.controller;
 
 import com.spring.dto.requestDto.EmailRequestDto;
 import com.spring.dto.requestDto.LoginRequestDto;
+import com.spring.dto.requestDto.SignUpRequestDto;
+import com.spring.dto.responseDto.DefaultResponseDto;
 import com.spring.dto.responseDto.PublicKeyResponseDto;
 import com.spring.model.Users;
 import com.spring.service.EmailAuthService;
@@ -13,8 +15,12 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.UnsupportedEncodingException;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPublicKeySpec;
@@ -43,12 +49,21 @@ public class Api_V1 {
     }
 
     @ApiResponses({
-            @ApiResponse(code = 200, message = "정상적으로 로그아웃", response = String.class)
+            @ApiResponse(code = 200, message = "정상적으로 이메일 전송", response = DefaultResponseDto.class)
     })
     @ApiOperation(value = "입력한 이메일로 인증 번호 요청 api", notes = "")
     @PostMapping("/sendEmailForAuthEmail")
     public ResponseEntity<?> sendEmailForAuthEmail(@RequestBody EmailRequestDto emailRequestDto){
         return emailAuthService.sendEmailForAuthEmail(emailRequestDto);
+    }
+
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "정상적으로 회원가입", response = DefaultResponseDto.class)
+    })
+    @ApiOperation(value = "메일 인증코드와 함께 입력한 정보로 회원 가입", notes = "")
+    @PostMapping("/signUp")
+    public ResponseEntity<?> signUp(@RequestBody SignUpRequestDto signUpRequestDto) throws NoSuchPaddingException, InvalidKeyException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException {
+        return usersService.signUp(signUpRequestDto);
     }
 
     @ApiOperation(value = "로그인", notes = "로그인에 대한 요청을 보냅니다.")

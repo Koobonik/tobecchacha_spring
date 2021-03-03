@@ -30,7 +30,13 @@ public class Users implements UserDetails {
     @Builder.Default
     private List<String> roles = new ArrayList<>();
 
+    public Users(String userEmail, String userPassword, String userNickname, List<String> roles){
+        this.userEmail = userEmail;
+        this.userPassword = userPassword;
+        this.userNickname = userNickname;
+        this.roles = roles;
 
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream()

@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 @NoArgsConstructor
 public class ValidateAuthNumberRequestDto extends SendAuthNumberRequestDto {
     @ApiModelProperty(example = "147258", value = "인증번호")
-    private int authSms;
+    private String authSms;
 
 
-    public ValidateAuthNumberRequestDto(int authSms, String userEmail) {
+    public ValidateAuthNumberRequestDto(String authSms, String userEmail) {
         this.authSms = authSms;
         super.setUserEmail(userEmail);
     }

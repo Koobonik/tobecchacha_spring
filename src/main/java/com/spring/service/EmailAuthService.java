@@ -13,6 +13,7 @@ import com.spring.util.DateCreator;
 import com.spring.util.EmailServiceImpl;
 import com.spring.util.ValidSomething;
 import com.spring.util.jwt.JwtTokenProvider;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
@@ -57,7 +58,7 @@ public class EmailAuthService {
         return emailAuthCodeRepository.findBySecret(secret);
     }
 
-    public EmailAuthCode findSmsAuth(int authNumber){
+    public EmailAuthCode findSmsAuth(String authNumber){
         return emailAuthCodeRepository.findByAuthNumber(authNumber);
     }
 
@@ -160,11 +161,11 @@ public class EmailAuthService {
                 // 바로 sms.canuse false로 돌려버린다!
                 String decryptedSecret = aes256Cipher.AES_Decode(emailAuthCode.getSecret());
                 String[] decryptedSecretArray = decryptedSecret.split(":");
-                if (list.get(decryptedSecretArray[1]) != null) {
+                if (list.get(decryptedSecretArray[0]) != null) {
                     emailAuthCode.setCanUse(false);
                     save(emailAuthCode);
                 }
-                list.put(decryptedSecretArray[1], true);
+                list.put(decryptedSecretArray[0], true);
             }
         }
     }
