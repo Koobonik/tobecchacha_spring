@@ -54,9 +54,12 @@ public class UsersService {
             return emailAuthService.validateAuthNumber(new ValidateAuthNumberRequestDto(signUpRequestDto.getEmailCode(), signUpRequestDto.getUserEmail()));
         }
 
+        // todo 이메일은 양방향 암호화, 비밀번호는 단방향 암호화하여 저장한다.
+
         // 유저를 만들어준다.
         List<String> roles = new ArrayList<>();
         roles.add("ROLE_USER");
+
         Users users = new Users(signUpRequestDto.getUserEmail(), signUpRequestDto.getPassword(), signUpRequestDto.getNickName(), roles);
 
         usersRepository.save(users);
