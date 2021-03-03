@@ -24,6 +24,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPublicKeySpec;
+import java.text.ParseException;
 import java.util.Collections;
 
 @Log4j2
@@ -62,7 +63,7 @@ public class Api_V1 {
     })
     @ApiOperation(value = "메일 인증코드와 함께 입력한 정보로 회원 가입", notes = "")
     @PostMapping("/signUp")
-    public ResponseEntity<?> signUp(@RequestBody SignUpRequestDto signUpRequestDto) throws NoSuchPaddingException, InvalidKeyException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException {
+    public ResponseEntity<?> signUp(@RequestBody SignUpRequestDto signUpRequestDto) throws NoSuchPaddingException, InvalidKeyException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, ParseException {
         return usersService.signUp(signUpRequestDto);
     }
 
