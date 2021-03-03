@@ -25,4 +25,7 @@ public class SignUpRequestDto {
     @ApiModelProperty(value = "가입자의 닉네임", example = "abcd1234", required = true)
     private String nickName;
 
+    @ApiModelProperty(value = "가입자의 파이어베이스 토큰", example = "abcd1234", required = true)
+    private String firebaseToken;
+
 }
