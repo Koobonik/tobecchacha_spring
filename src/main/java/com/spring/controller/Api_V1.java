@@ -4,7 +4,6 @@ import com.spring.dto.requestDto.EmailRequestDto;
 import com.spring.dto.requestDto.LoginRequestDto;
 import com.spring.dto.requestDto.SignUpRequestDto;
 import com.spring.dto.responseDto.DefaultResponseDto;
-import com.spring.dto.responseDto.PublicKeyResponseDto;
 import com.spring.model.Users;
 import com.spring.service.EmailAuthService;
 import com.spring.service.UsersService;
@@ -18,12 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.security.*;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.RSAPublicKeySpec;
 import java.text.ParseException;
 import java.util.Collections;
 
@@ -69,19 +65,8 @@ public class Api_V1 {
 
     @ApiOperation(value = "로그인", notes = "로그인에 대한 요청을 보냅니다.")
     @PostMapping(value = "login")
-    public String login(@RequestBody LoginRequestDto loginRequestDto, HttpSession httpSession){
-        // 일단 이렇게 계정이 있고 알맞게 로그인했다고 가정합시다!
-        Users users = new Users();
-        users.setUserId(1);
-        users.setUserEmail(loginRequestDto.getUserLoginId());
-        users.setUserPassword(loginRequestDto.getUserPassword());
-        users.setRoles(Collections.singletonList("ROLE_USER"));
-        if(loginRequestDto.getUserLoginId().equals("test_login_id") && loginRequestDto.getUserPassword().equals("test_login_password")){
-            log.info((PrivateKey) httpSession.getAttribute("privateKey"));
-            usersService.save(users);
-            return jwtTokenProvider.createToken(users.getUserEmail(), users.getRoles());
-        }
-        return loginRequestDto.getUserLoginId() + " : " + loginRequestDto.getUserPassword();
+    public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto) throws NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+        return usersService.login(loginRequestDto);
     }
 
     @PostMapping("jwtValidation")

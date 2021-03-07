@@ -1,9 +1,10 @@
 package com.spring.service;
 
+import com.spring.configuration.PasswordEncoding;
+import com.spring.dto.requestDto.LoginRequestDto;
 import com.spring.dto.requestDto.SignUpRequestDto;
 import com.spring.dto.requestDto.ValidateAuthNumberRequestDto;
 import com.spring.dto.responseDto.DefaultResponseDto;
-import com.spring.model.EmailAuthCode;
 import com.spring.model.EmailAuthCodeRepository;
 import com.spring.model.Users;
 import com.spring.model.UsersRepository;
@@ -27,7 +28,6 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 @Log4j2
@@ -41,6 +41,7 @@ public class UsersService {
     private final EmailAuthCodeRepository emailAuthCodeRepository;
     private final AES256Cipher aes256Cipher;
     private final EmailAuthService emailAuthService;
+
     @Transactional
     public Long save(Users dto){
         return usersRepository.save(dto).getUserId();
@@ -55,21 +56,30 @@ public class UsersService {
         }
 
         // todo 이메일은 양방향 암호화, 비밀번호는 단방향 암호화하여 저장한다.
+        String encryptedEmail = aes256Cipher.AES_Encode(signUpRequestDto.getUserEmail());
+        String password = new PasswordEncoding().encode(signUpRequestDto.getPassword());
 
         // 유저를 만들어준다.
         List<String> roles = new ArrayList<>();
         roles.add("ROLE_USER");
 
-        Users users = new Users(signUpRequestDto.getUserEmail(), signUpRequestDto.getPassword(), signUpRequestDto.getNickName(), roles);
+        Users users = new Users(encryptedEmail, password, signUpRequestDto.getNickName(), roles);
 
         usersRepository.save(users);
-        return new ResponseEntity<>(new DefaultResponseDto(200, "The membership has been registered normally."), HttpStatus.OK);
-
+        return new ResponseEntity<>(new DefaultResponseDto(200, "The membership has been registered successfully!"), HttpStatus.OK);
     }
 
     // 로그인
-    public ResponseEntity<?> login(){
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<?> login(LoginRequestDto loginRequestDto) throws NoSuchPaddingException, InvalidKeyException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException {
+        // 일단 유저를 찾는다.
+        log.info("유저 이메일 {}", loginRequestDto.getUserEmail());
+        Users users = usersRepository.findByUserEmail(aes256Cipher.AES_Encode(loginRequestDto.getUserEmail()));
+        if(users == null) return DefaultResponseDto.canNotFindAccount();
+
+        if(new PasswordEncoding().matches(loginRequestDto.getUserPassword(), users.getPassword())){
+            return new ResponseEntity<>(jwtTokenProvider.createTokens(users.getUserEmail(), users.getRoles()),HttpStatus.OK);
+        }
+        return DefaultResponseDto.canNotMatchedAccount();
     }
 
     // 로그아웃

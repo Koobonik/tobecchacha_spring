@@ -1,5 +1,6 @@
 package com.spring.util.jwt;
 
+import com.spring.dto.responseDto.JwtResponseDto;
 import com.spring.model.Users;
 import com.spring.util.PemReader;
 import io.jsonwebtoken.Claims;
@@ -35,6 +36,9 @@ public class JwtTokenProvider {
     // 토큰 유효시간 30분
     private final long tokenValidTime = 60 * 30  * 1000L;
 
+    // 토큰 유효시간 1년
+    private long refreshTokenValidTime = 60 * 60 * 24 * 365 * 1000L;
+
     private final UserDetailsService userDetailsService;
     private final StringRedisTemplate redisTemplate;
 
@@ -66,11 +70,30 @@ public class JwtTokenProvider {
                 .setExpiration(new Date(now.getTime() + tokenValidTime)) // set Expire Time 언제까지 유효한지.
                 .signWith(SignatureAlgorithm.RS256, tokenKey)  // 사용할 암호화 알고리즘과
                 .setIssuer("dev_koo")
-                .setId("s아이디아이디")
-
-
                 // signature 에 들어갈 secret값 세팅
                 .compact();
+    }
+    public String createRefreshToken(String userPk, List<String> roles) {
+        Claims claims = Jwts.claims().setSubject(userPk); // JWT payload 에 저장되는 정보단위
+        claims.put("roles", roles); // 정보는 key / value 쌍으로 저장된다.
+        Map<String, Object> header = new HashMap<>();
+        header.put("alg", "RS256");
+        header.put("typ", "JWT");
+        Date now = new Date();
+        // log.info(refreshKey);
+        return Jwts.builder()
+                .setHeader(header) // 알고리즘과 토큰 타입을 헤더에 넣어줌
+                .setClaims(claims) // 유저의 이름(userPk)등이 담겨있음
+                .setIssuedAt(now) // 토큰 발행 시간 정보 iat
+                .setExpiration(new Date(now.getTime() + refreshTokenValidTime)) // set Expire Time 언제까지 유효한지.
+                .signWith(SignatureAlgorithm.RS256, tokenKey)  // 사용할 암호화 알고리즘과
+                .setIssuer("dev_koo")
+                // signature 에 들어갈 secret값 세팅
+                .compact();
+    }
+
+    public JwtResponseDto createTokens(String userName, List<String> roles){
+        return new JwtResponseDto(createToken(userName, roles), createRefreshToken(userName, roles));
     }
 
     // JWT 토큰에서 인증 정보 조회

@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 @NoArgsConstructor
 public class LoginRequestDto {
     // Model 에 보이는 설명들.
-    @ApiModelProperty(example = "test_login_id", value = "로그인 아이디", required = true)
-    private String userLoginId;
+    @ApiModelProperty(example = "test_login_email", value = "로그인 이메일", required = true)
+    private String userEmail;
 
     @ApiModelProperty(example = "test_login_password", value = "로그인 비밀번호", required = true)
     private String userPassword;

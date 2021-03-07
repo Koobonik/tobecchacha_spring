@@ -62,6 +62,8 @@ public class EmailAuthService {
         return emailAuthCodeRepository.findByAuthNumber(authNumber);
     }
 
+
+    // 이메일 인증을 위해 보내는 기능.
     @Transactional
     @SneakyThrows
     public ResponseEntity<?> sendEmailForAuthEmail(EmailRequestDto emailRequestDto){
