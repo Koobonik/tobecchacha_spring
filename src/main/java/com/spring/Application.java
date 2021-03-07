@@ -20,9 +20,9 @@ public class Application {
     }
 
     public static final String APPLICATION_LOCATIONS = "spring.config.location="
-            + "classpath:application.yml,"
-            + "classpath:aws.yml,"
-            + "classpath:application.properties";
+            + "classpath:application.yml";
+//            + "classpath:aws.yml";
+//            + "classpath:application.properties";
     public static void main(String[] args) {
 
 //        SpringApplication.run(Application.class, args);
