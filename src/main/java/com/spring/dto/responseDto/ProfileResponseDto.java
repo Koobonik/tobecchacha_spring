@@ -14,5 +14,6 @@ import java.util.List;
 public class ProfileResponseDto {
     long id;
     String userNickname;
+    String imageUrl;
     List<String> roles;
 }

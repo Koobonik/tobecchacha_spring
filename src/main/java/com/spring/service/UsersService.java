@@ -90,7 +90,7 @@ public class UsersService {
         if(jwtTokenProvider.validateToken(jwt)){
             log.info("잘 들어옴");
             Users user = jwtTokenProvider.getUsersFromToken(httpServletRequest);
-            ProfileResponseDto profileResponseDto = new ProfileResponseDto(user.getUserId(), user.getUserNickname(), user.getRoles());
+            ProfileResponseDto profileResponseDto = new ProfileResponseDto(user.getUserId(), user.getUserNickname(), user.getImageUrl(),user.getRoles());
             return new ResponseEntity<>(profileResponseDto, HttpStatus.OK);
         }
         return DefaultResponseDto.canNotFindProfile();

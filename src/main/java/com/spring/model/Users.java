@@ -25,6 +25,8 @@ public class Users implements UserDetails {
     private String userEmail;
     private String userNickname;
     private String userPassword;
+    @Column(columnDefinition = "TEXT")
+    private String imageUrl;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
