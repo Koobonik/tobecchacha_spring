@@ -1,0 +1,18 @@
+package com.spring.dto.responseDto;
+
+import lombok.*;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Data
+@Service
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class ProfileResponseDto {
+    long id;
+    String userNickname;
+    List<String> roles;
+}

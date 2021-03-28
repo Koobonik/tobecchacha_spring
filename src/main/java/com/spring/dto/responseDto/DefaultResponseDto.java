@@ -23,4 +23,7 @@ public class DefaultResponseDto {
     public static ResponseEntity<?> canNotMatchedAccount(){
         return new ResponseEntity<>(new DefaultResponseDto(409, "Can't find matched account"), HttpStatus.CONFLICT);
     }
+    public static ResponseEntity<?> canNotFindProfile(){
+        return new ResponseEntity<>(new DefaultResponseDto(409, "Can't find profile"), HttpStatus.CONFLICT);
+    }
 }

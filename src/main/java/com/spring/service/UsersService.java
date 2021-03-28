@@ -5,6 +5,7 @@ import com.spring.dto.requestDto.LoginRequestDto;
 import com.spring.dto.requestDto.SignUpRequestDto;
 import com.spring.dto.requestDto.ValidateAuthNumberRequestDto;
 import com.spring.dto.responseDto.DefaultResponseDto;
+import com.spring.dto.responseDto.ProfileResponseDto;
 import com.spring.model.EmailAuthCodeRepository;
 import com.spring.model.Users;
 import com.spring.model.UsersRepository;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -80,6 +82,18 @@ public class UsersService {
             return new ResponseEntity<>(jwtTokenProvider.createTokens(users.getUserEmail(), users.getRoles()),HttpStatus.OK);
         }
         return DefaultResponseDto.canNotMatchedAccount();
+    }
+
+    public ResponseEntity<?> getUserProfile(HttpServletRequest httpServletRequest){
+        String jwt = jwtTokenProvider.resolveToken(httpServletRequest);
+        log.info("유저 토큰 {}", jwt);
+        if(jwtTokenProvider.validateToken(jwt)){
+            log.info("잘 들어옴");
+            Users user = jwtTokenProvider.getUsersFromToken(httpServletRequest);
+            ProfileResponseDto profileResponseDto = new ProfileResponseDto(user.getUserId(), user.getUserNickname(), user.getRoles());
+            return new ResponseEntity<>(profileResponseDto, HttpStatus.OK);
+        }
+        return DefaultResponseDto.canNotFindProfile();
     }
 
     // 로그아웃

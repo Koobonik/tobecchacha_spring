@@ -127,10 +127,11 @@ public class JwtTokenProvider {
             }
             return !claims.getBody().getExpiration().before(new Date());
         } catch (Exception e) {
+            log.info("validateToken 에러 발생!");
             return false;
         }
     }
-    public Users getPetmilyUsersFromToken(HttpServletRequest httpServletRequest){
+    public Users getUsersFromToken(HttpServletRequest httpServletRequest){
         String token = this.resolveToken(httpServletRequest);
         return (Users) this.getAuthentication(token).getPrincipal();
     }

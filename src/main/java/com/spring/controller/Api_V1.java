@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.security.*;
@@ -67,6 +68,11 @@ public class Api_V1 {
     @PostMapping(value = "login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto) throws NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {
         return usersService.login(loginRequestDto);
+    }
+
+    @GetMapping(value = "getProfile")
+    public ResponseEntity<?> getProfile(HttpServletRequest httpServletRequest){
+        return usersService.getUserProfile(httpServletRequest);
     }
 
     @PostMapping("jwtValidation")
