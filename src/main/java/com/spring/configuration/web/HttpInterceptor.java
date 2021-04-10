@@ -50,8 +50,8 @@ public class HttpInterceptor extends HandlerInterceptorAdapter {
 	}
 	@Override
 	public void afterCompletion(HttpServletRequest request,
-								HttpServletResponse response, 
-								Object handler, 
+								HttpServletResponse response,
+								Object handler,
 								Exception ex) {
 		log.info("================ Method Completed");
 	}
