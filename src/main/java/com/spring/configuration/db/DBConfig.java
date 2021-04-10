@@ -28,8 +28,8 @@ import java.util.stream.Collectors;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        entityManagerFactoryRef = "helloKoreanEntityManager",
-        transactionManagerRef = "helloKoreanTransactionManager",
+        entityManagerFactoryRef = "tobecchachaEntityManager",
+        transactionManagerRef = "tobecchachaTransactionManager",
         basePackages = "com.spring.model"
 )
 public class DBConfig {
@@ -56,7 +56,7 @@ public class DBConfig {
     }
 
 
-    @Bean(name = "helloKoreanEntityManager")
+    @Bean(name = "tobecchachaEntityManager")
     public LocalContainerEntityManagerFactoryBean mysqlEntityManagerFactory(EntityManagerFactoryBuilder builder) {
         Map<String, Object> properties = new HashMap<String, Object>();
         // yml이나 properties에서도 써줄 수 있지만 여러 디비를 관리하다보면 밑에와같이 쓸 수 있습니다.
@@ -74,8 +74,8 @@ public class DBConfig {
     }
 
 
-    @Bean(name = "helloKoreanTransactionManager")
-    public PlatformTransactionManager mysqlTransactionManager(@Qualifier("helloKoreanEntityManager") EntityManagerFactory entityManagerFactory) {
+    @Bean(name = "tobecchachaTransactionManager")
+    public PlatformTransactionManager mysqlTransactionManager(@Qualifier("tobecchachaEntityManager") EntityManagerFactory entityManagerFactory) {
         return new JpaTransactionManager(entityManagerFactory);
     }
 
