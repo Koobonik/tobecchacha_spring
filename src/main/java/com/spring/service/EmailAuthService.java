@@ -77,8 +77,8 @@ public class EmailAuthService {
         emailAuthCode.setWhereToUse("이메일인증");
         emailAuthCode.setCanUse(true);
         emailAuthCode.setSecret(createSecret(emailRequestDto.getRecipient(), emailAuthCode.getAuthNumber()));
-        if(emailServiceImpl.sendSimpleMessage(emailRequestDto.getRecipient(), "[HelloKorean]This is email for auth number",
-                "auth number : [" + emailAuthCode.getAuthNumber() + "]please input in your app")){
+        if(emailServiceImpl.sendSimpleMessage(emailRequestDto.getRecipient(), "[차차] 이메일 인증 코드 입니다.",
+                "인증번호 : [" + emailAuthCode.getAuthNumber() + "]")){
             emailAuthCodeRepository.save(emailAuthCode);
             blockDuplicateCode(emailAuthCode.getSecret());
             return new ResponseEntity<>(new DefaultResponseDto(200,"성공적으로 이메일을 발송하였습니다."), HttpStatus.OK);
