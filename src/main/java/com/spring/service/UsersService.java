@@ -5,11 +5,13 @@ import com.spring.dto.requestDto.LoginRequestDto;
 import com.spring.dto.requestDto.SignUpRequestDto;
 import com.spring.dto.requestDto.ValidateAuthNumberRequestDto;
 import com.spring.dto.responseDto.DefaultResponseDto;
+import com.spring.dto.responseDto.JwtResponseDto;
 import com.spring.dto.responseDto.ProfileResponseDto;
 import com.spring.model.EmailAuthCodeRepository;
 import com.spring.model.Users;
 import com.spring.model.UsersRepository;
 import com.spring.util.AES256Cipher;
+import com.spring.util.DateCreator;
 import com.spring.util.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -72,12 +74,13 @@ public class UsersService {
     }
 
     // 로그인
-    public ResponseEntity<?> login(LoginRequestDto loginRequestDto) throws NoSuchPaddingException, InvalidKeyException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException {
+    public ResponseEntity<?> login(LoginRequestDto loginRequestDto) throws NoSuchPaddingException, InvalidKeyException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, ParseException {
         // 일단 유저를 찾는다.
         log.info("유저 이메일 {}", loginRequestDto.getUserEmail());
         Users users = usersRepository.findByUserEmail(aes256Cipher.AES_Encode(loginRequestDto.getUserEmail()));
         if(users == null) return DefaultResponseDto.canNotFindAccount();
-
+        users.setLastLogin(new DateCreator().getTimestamp());
+        usersRepository.save(users);
         if(new PasswordEncoding().matches(loginRequestDto.getUserPassword(), users.getPassword())){
             return new ResponseEntity<>(jwtTokenProvider.createTokens(users.getUserEmail(), users.getRoles()),HttpStatus.OK);
         }
@@ -104,5 +107,42 @@ public class UsersService {
         Users users = (Users) jwtTokenProvider.getAuthentication(jwt).getPrincipal();
         log.info("로그아웃 유저 아이디 : '{}' , 유저 이름 : '{}'", users.getUserId(), users.getUserEmail());
         return new ResponseEntity<>(new DefaultResponseDto(200,"로그아웃 되었습니다."), HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> renewalToken(String token) throws ParseException {
+        log.info("리뉴얼을 위해 들어온 토큰값! '{}'\n이 토큰이 유효한가?! -> '{}'", token.substring(token.length()-3), jwtTokenProvider.validateToken(token));
+        if(jwtTokenProvider.validateToken(token)) {
+            log.info("권한 통과");
+            Users user = ((Users) jwtTokenProvider.getAuthentication(token).getPrincipal());
+
+            log.info("새로운 리뉴얼 토큰 발행");
+            JwtResponseDto jwtResponseDto = jwtTokenProvider.createTokens(user.getUserEmail(), user.getRoles());
+            user.setLastLogin(new DateCreator().getTimestamp());
+            usersRepository.save(user);
+            log.info("유저이름 : '{}'\njwt -> '{}'\nrefresh -> '{}'", user.getUserNickname(), jwtResponseDto.getJwt().substring(jwtResponseDto.getJwt().length()-3), jwtResponseDto.getRefreshJwt().substring(jwtResponseDto.getRefreshJwt().length()-3));
+            new Thread(
+                    () -> {
+                        try {
+                            Thread.sleep(10*1000);
+                            invalidationToken(token);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+            ).start();
+
+            return new ResponseEntity<>(jwtResponseDto, HttpStatus.OK);
+        }
+        log.info("refreshToken 토큰 유효하지 않아서 401 반환");
+        return new ResponseEntity<>( new DefaultResponseDto(401, "토큰이 유효하지 않습니다."), HttpStatus.UNAUTHORIZED);
+    }
+
+    @javax.transaction.Transactional
+    public void invalidationToken(String token) throws InterruptedException {
+        ValueOperations<String, String> logoutValueOperations = redisTemplate.opsForValue();
+        Users user = (Users) jwtTokenProvider.getAuthentication(token).getPrincipal();
+        logoutValueOperations.set(token, String.valueOf(user.getUserId())); // redis set 명령어
+
+        log.info("토큰 무효화! 유저 아이디 : '{}' , 유저 이름 : '{}'", user.getUserId(), user.getUserNickname());
     }
 }

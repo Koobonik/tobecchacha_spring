@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,7 +26,7 @@ public class Users implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long userId;
 
-    @Column(columnDefinition = "TEXT", nullable = false)
+    @Column(columnDefinition = "TEXT", nullable = false, unique = true)
     private String userEmail;
     @Column(columnDefinition = "VARCHAR(20)", nullable = false)
     private String userNickname;
@@ -45,6 +46,9 @@ public class Users implements UserDetails {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    @Column(name = "last_login")
+    private Timestamp lastLogin;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default

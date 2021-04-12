@@ -113,7 +113,7 @@ public class JwtTokenProvider {
 
     // Request의 Header에서 token 값을 가져옵니다. "JWT" : "TOKEN값'
     public String resolveToken(HttpServletRequest request) {
-        return request.getHeader("JWT");
+        return request.getHeader("Authorization");
     }
 
     // 토큰의 유효성 + 만료일자 확인
