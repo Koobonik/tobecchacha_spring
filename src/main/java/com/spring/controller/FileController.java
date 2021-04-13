@@ -2,6 +2,7 @@ package com.spring.controller;
 
 import com.spring.dto.responseDto.UploadFileResponse;
 import com.spring.service.FileStorageService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -22,12 +23,11 @@ import java.util.stream.Collectors;
 
 @Log4j2
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/file")
 public class FileController {
 
-
-    @Autowired
-    private FileStorageService fileStorageService;
+    private final FileStorageService fileStorageService;
 
     @RequestMapping(value = "/uploadFile", method = {RequestMethod.GET, RequestMethod.POST})
     public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
