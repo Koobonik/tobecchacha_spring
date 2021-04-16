@@ -1,8 +1,3 @@
-#!/bin/bash
-echo "> Git Pull"
-
-git pull
-
 echo "> 프로젝트 Build 시작"
 
 ./gradlew build
@@ -27,4 +22,4 @@ JAR_NAME=$(ls / |grep 'Server' | tail -n 1)
 
 echo "> JAR Name: $JAR_NAME"
 
-java -jar build/libs/tobecchacha-0.0.1-SNAPSHOT.jar &
+java -jar build/libs/tobecchacha-0.0.1-SNAPSHOT.jar --spring.profiles.active=product&

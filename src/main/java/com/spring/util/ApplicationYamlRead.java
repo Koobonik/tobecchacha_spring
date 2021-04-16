@@ -13,8 +13,8 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 @Getter
 public class ApplicationYamlRead {
-    private String hello_korean_url;
-    private String hello_korean_driver_class_name;
-    private String hello_korean_username;
-    private String hello_korean_password;
+    private String url;
+    private String driver_class_name;
+    private String username;
+    private String password;
 }

@@ -42,10 +42,10 @@ public class DBConfig {
 //        hikariDataSource.addDataSourceProperty("useSSL", true);
 //        hikariDataSource.addDataSourceProperty("requireSSL", true);
 //        hikariDataSource.addDataSourceProperty("verifyServerCertificate", true);
-        hikariDataSource.setDriverClassName(applicationYamlRead.getHello_korean_driver_class_name());
-        hikariDataSource.setJdbcUrl(applicationYamlRead.getHello_korean_url());
-        hikariDataSource.setUsername(applicationYamlRead.getHello_korean_username());
-        hikariDataSource.setPassword(applicationYamlRead.getHello_korean_password());
+        hikariDataSource.setDriverClassName(applicationYamlRead.getDriver_class_name());
+        hikariDataSource.setJdbcUrl(applicationYamlRead.getUrl());
+        hikariDataSource.setUsername(applicationYamlRead.getUsername());
+        hikariDataSource.setPassword(applicationYamlRead.getPassword());
 //        DriverManagerDataSource dataSource = new DriverManagerDataSource();
         System.out.println("잘되나 test");
 //        dataSource.setDriverClassName(env.getProperty("spring.donda.datasource.driver-class-name"));
