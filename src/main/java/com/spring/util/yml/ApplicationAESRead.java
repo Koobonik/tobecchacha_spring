@@ -15,4 +15,5 @@ import org.springframework.context.annotation.Configuration;
 public class ApplicationAESRead {
     private String secretkey;
     private String iv;
+    private String url;
 }

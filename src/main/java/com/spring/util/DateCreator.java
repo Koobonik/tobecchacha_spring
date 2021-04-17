@@ -50,6 +50,14 @@ public class DateCreator {
         return untilDate;
     }
 
+    public Timestamp getAfterOneDay(Timestamp timestamp){
+        long oneWeek = 60*60*24*1000L;
+        long afterOneWeek = timestamp.getTime();
+        afterOneWeek += oneWeek;
+        Timestamp untilDate = new Timestamp(afterOneWeek);
+        return untilDate;
+    }
+
     public Timestamp getTimestamp(SimpleDateFormat simpleDateFormat, String createDate) throws ParseException {
         return new Timestamp(simpleDateFormat.parse(createDate).getTime());
     }

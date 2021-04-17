@@ -1,38 +1,41 @@
 package com.spring.service;
 
 import com.spring.configuration.PasswordEncoding;
-import com.spring.dto.requestDto.LoginRequestDto;
-import com.spring.dto.requestDto.SignUpRequestDto;
-import com.spring.dto.requestDto.ValidateAuthNumberRequestDto;
+import com.spring.dto.requestDto.*;
 import com.spring.dto.responseDto.DefaultResponseDto;
 import com.spring.dto.responseDto.JwtResponseDto;
 import com.spring.dto.responseDto.ProfileResponseDto;
 import com.spring.model.EmailAuthCodeRepository;
+import com.spring.model.ResetPasswordAuthCode;
 import com.spring.model.Users;
 import com.spring.model.UsersRepository;
 import com.spring.util.AES256Cipher;
 import com.spring.util.DateCreator;
+import com.spring.util.ValidSomething;
 import com.spring.util.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -45,7 +48,19 @@ public class UsersService {
     private final EmailAuthCodeRepository emailAuthCodeRepository;
     private final AES256Cipher aes256Cipher;
     private final EmailAuthService emailAuthService;
-
+    private final ResetPasswordAuthCodeService resetPasswordAuthCodeService;
+    public Users findByEmail(String email) throws NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+        log.info("findByEmail : '{}'", email);
+        return usersRepository.findByUserEmail(aes256Cipher.AES_Encode(email));
+    }
+    public Users findByEmailAndUserNickname(String email, String nickName) throws NoSuchPaddingException, InvalidAlgorithmParameterException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+        log.info("findByEmail : '{}'  nickName '{}'", email, nickName);
+        return usersRepository.findByUserEmailAndUserNickname(aes256Cipher.AES_Encode(email), nickName);
+    }
+    private Users findById(long authUserId) {
+        log.info("찾는 유저의 아이디 '{}'", authUserId);
+        return usersRepository.findByUserId(authUserId);
+    }
     @Transactional
     public Long save(Users dto){
         return usersRepository.save(dto).getUserId();
@@ -99,12 +114,98 @@ public class UsersService {
         return DefaultResponseDto.canNotFindProfile();
     }
 
+    // 비밀번호 초기화 링크를 전송해줄 것임
+    // 이메일로 인증 코드 보내기 (비밀번호 찾기)
+    @javax.transaction.Transactional
+    public ResponseEntity<?> sendResetPasswordLink(FindPasswordRequestDto findPasswordRequestDto) throws Exception {
+        if(!ValidSomething.isValidEmail(findPasswordRequestDto.getUserEmail())){
+            return new ResponseEntity<>(new DefaultResponseDto(409, "이메일 양식을 벗어났습니다."), HttpStatus.CONFLICT);
+        }
+        Users authUser = findByEmailAndUserNickname(findPasswordRequestDto.getUserEmail(), findPasswordRequestDto.getUserNickname());
+        if(authUser == null) return new ResponseEntity<>(new DefaultResponseDto(409, "계정 정보가 유효하지 않습니다."), HttpStatus.CONFLICT);
+        UUID uuid = UUID.randomUUID();
+        ResetPasswordAuthCode resetPasswordAuthCode = new ResetPasswordAuthCode(uuid.toString(), authUser.getUserId(), new DateCreator().getTimestamp(), true);
+
+        resetPasswordAuthCodeService.save(resetPasswordAuthCode);
+        String link = aes256Cipher.getUrl()+"/resetPassword?token="+uuid.toString();
+        EmailSenderRequestDto emailSenderRequestDto = new EmailSenderRequestDto(findPasswordRequestDto.getUserEmail(), "차차 비밀번호 재설정 링크 입니다.",
+                "이링크를 클릭하여 비밀번호를 재설정 해주세요.\n" +link);
+        Map<String, String> map = new HashMap<>();
+        map.put("link", link);
+        return emailAuthService.sendEmailForFindPassword(emailSenderRequestDto);
+    }
+
+    @javax.transaction.Transactional
+    public ResponseEntity<?> confirmLink(@RequestParam String token) throws ParseException {
+        // code 는 AES256으로 암호화되어 있습니다.
+        log.info("코드 왔다.");
+        ResetPasswordAuthCode resetPasswordAuthCode = resetPasswordAuthCodeService.findByCode(token);
+        if (resetPasswordAuthCode == null) // 코드 검증. 없으면 409 반환
+            return new ResponseEntity<>(new DefaultResponseDto(409,  "코드가 유효하지 않습니다."), HttpStatus.CONFLICT);
+        // 하루 지났는지 검증해야함 비교값이 잘못된듯
+        if(!new DateCreator().getTimestamp().before(new DateCreator().getAfterOneDay(resetPasswordAuthCode.getCreatedDate()))){
+            log.info("하루 지났습니다.");
+            log.info(new DateCreator().getTimestamp() + " : " + new DateCreator().getAfterOneDay(resetPasswordAuthCode.getCreatedDate()));
+            return new ResponseEntity<>(new DefaultResponseDto(409, "사용기한이 지난 코드 입니다."), HttpStatus.CONFLICT);
+        }
+        log.info("코드 문제 없음");
+        Users authUser = findById(resetPasswordAuthCode.getAuthUserId());
+        if (authUser == null) // 유저 검증. 없으면 409 반환
+            return new ResponseEntity<>(new DefaultResponseDto(409,  "계정이 유효하지 않습니다."), HttpStatus.CONFLICT);
+        log.info("유저도 문제 없으므로 반환");
+
+        HttpHeaders headers = new HttpHeaders();
+        // 나중에 우리 비밀번호 재설정 페이지 링크 리다이렉트 해주어야 ㅇ함.
+        headers.setLocation(URI.create("http://carhelper-client.kro.kr:5000/manager/reset/password?token="+token));
+        headers.setLocation(URI.create("http://172.30.1.12:5000/manager/reset/password"));
+        log.info("재설정 토큰 : " + token);
+//        return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+        return new ResponseEntity<>(new DefaultResponseDto(200, "인증이 완료 되었습니다."), HttpStatus.OK);
+    }
+
+
+
+    @javax.transaction.Transactional
+    public ResponseEntity<?> resetPasswordUsingToken(@RequestBody ResetPasswordRequestDto resetPasswordRequestDto) throws Exception {
+        log.info("토큰(uuid)값을 이용하여 비밀번호 리셋");
+        ResetPasswordAuthCode resetPasswordAuthCode = resetPasswordAuthCodeService.findByCode(resetPasswordRequestDto.getToken());
+
+        // 코드값 한번 더 검증
+        if(resetPasswordAuthCode == null)
+            return new ResponseEntity<>(new DefaultResponseDto(409, "코드가 유효하지 않습니다."), HttpStatus.CONFLICT);
+        // 이 코드를 썼으면 더이상 사용 불가
+        if(!resetPasswordAuthCode.isCanUse())
+            return new ResponseEntity<>(new DefaultResponseDto(409, "이미 사용한 코드 입니다."), HttpStatus.CONFLICT);
+
+        // 하루 지났는지 검증해야함 비교값이 잘못된듯
+        if(!new DateCreator().getTimestamp().before(new DateCreator().getAfterOneDay(resetPasswordAuthCode.getCreatedDate()))){
+            log.info("하루 지났습니다.");
+            log.info(new DateCreator().getTimestamp() + " : " + new DateCreator().getAfterOneDay(resetPasswordAuthCode.getCreatedDate()));
+            return new ResponseEntity<>(new DefaultResponseDto(409, "사용기한이 지난 코드 입니다."), HttpStatus.CONFLICT);
+        }
+
+        Users authUser = findById(resetPasswordAuthCode.getAuthUserId());
+        if(authUser == null)
+            return new ResponseEntity<>(new DefaultResponseDto(409, "이메일이 유효하지 않습니다."), HttpStatus.CONFLICT);
+
+        if(!ValidSomething.isValidPassword(resetPasswordRequestDto.getNewPassword())){
+            return new ResponseEntity<>(new DefaultResponseDto(409, "비밀번호 양식을 벗어났습니다. 8~32자 이내로 영문+숫자+특수문자를 조합하여 입력해주세요"), HttpStatus.CONFLICT);
+        }
+        resetPasswordAuthCode.setCertifiedDate(new DateCreator().getTimestamp());
+        resetPasswordAuthCodeService.save(resetPasswordAuthCode);
+        authUser.setUserPassword(new PasswordEncoding().encode(resetPasswordRequestDto.getNewPassword()));
+        save(authUser);
+        return new ResponseEntity<>(new DefaultResponseDto(200, "비밀번호가 변경되었습니다."), HttpStatus.OK);
+    }
+
     // 로그아웃
     @javax.transaction.Transactional
-    public ResponseEntity<?> logout(String jwt){
+    public ResponseEntity<?> logout(JwtRequestDto jwtRequestDto){
+        Users users = (Users) jwtTokenProvider.getAuthentication(jwtRequestDto.getJwt()).getPrincipal();
         ValueOperations<String, String> logoutValueOperations = redisTemplate.opsForValue();
-        logoutValueOperations.set(jwt, jwt); // redis set 명령어
-        Users users = (Users) jwtTokenProvider.getAuthentication(jwt).getPrincipal();
+        logoutValueOperations.set(jwtRequestDto.getJwt(), String.valueOf(users.getUserId())); // redis set 명령어
+        logoutValueOperations.set(jwtRequestDto.getRefreshJwt(), String.valueOf(users.getUserId())); // redis set 명령어
+
         log.info("로그아웃 유저 아이디 : '{}' , 유저 이름 : '{}'", users.getUserId(), users.getUserEmail());
         return new ResponseEntity<>(new DefaultResponseDto(200,"로그아웃 되었습니다."), HttpStatus.OK);
     }

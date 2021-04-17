@@ -1,8 +1,6 @@
 package com.spring.service;
 
-import com.spring.dto.requestDto.EmailAuthRequestDto;
-import com.spring.dto.requestDto.EmailRequestDto;
-import com.spring.dto.requestDto.ValidateAuthNumberRequestDto;
+import com.spring.dto.requestDto.*;
 import com.spring.dto.responseDto.DefaultResponseDto;
 import com.spring.model.EmailAuthCode;
 import com.spring.model.EmailAuthCodeRepository;
@@ -84,6 +82,16 @@ public class EmailAuthService {
             return new ResponseEntity<>(new DefaultResponseDto(200,"성공적으로 이메일을 발송하였습니다."), HttpStatus.OK);
         }
         return new ResponseEntity<>(new DefaultResponseDto(500,"이메일 발송에 에러가 발생하였습니다."), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Transactional
+    @SneakyThrows
+    public ResponseEntity<?> sendEmailForFindPassword(EmailSenderRequestDto emailSenderRequestDto){
+        if(emailServiceImpl.sendSimpleMessage(emailSenderRequestDto.getRecipient(), emailSenderRequestDto.getSubject(), emailSenderRequestDto.getBody())){
+            return new ResponseEntity<>(new DefaultResponseDto(200, "이메일을 전송하였습니다."), HttpStatus.OK);
+        }
+        return DefaultResponseDto.canNotSendResetEmail();
+
     }
 
 //    @SneakyThrows

@@ -1,8 +1,6 @@
 package com.spring.controller;
 
-import com.spring.dto.requestDto.EmailRequestDto;
-import com.spring.dto.requestDto.LoginRequestDto;
-import com.spring.dto.requestDto.SignUpRequestDto;
+import com.spring.dto.requestDto.*;
 import com.spring.dto.responseDto.DefaultResponseDto;
 import com.spring.dto.responseDto.JwtResponseDto;
 import com.spring.model.Users;
@@ -35,6 +33,7 @@ public class Api_V1 {
     private final JwtTokenProvider jwtTokenProvider;
     private final UsersService usersService;
     private final EmailAuthService emailAuthService;
+
     @ApiOperation(value = "HTTP GET EXAMPLE", notes = "GET 요청에 대한 예제 입니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
@@ -55,6 +54,37 @@ public class Api_V1 {
     public ResponseEntity<?> sendEmailForAuthEmail(@RequestBody EmailRequestDto emailRequestDto){
         return emailAuthService.sendEmailForAuthEmail(emailRequestDto);
     }
+
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "정상적으로 이메일 전송", response = DefaultResponseDto.class)
+    })
+    @ApiOperation(value = "입력한 이메일로 인증 번호 요청 api", notes = "")
+    @PostMapping("/findPassword")
+    public ResponseEntity<?> findPassword(@RequestBody FindPasswordRequestDto findPasswordRequestDto) throws Exception {
+        return usersService.sendResetPasswordLink(findPasswordRequestDto);
+    }
+
+    // 비밀번호 재설정
+    @ApiOperation(value = "비밀번호 '찾기' 를 이용했을 시 사용하는 비밀번호 재설정 API", notes = "이메일로 받았었던 토큰값과")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "비밀번호 재설정할 수 있는 링크를 이메일로 전송.", response = DefaultResponseDto.class),
+            @ApiResponse(code = 500, message = "서버에러", response = DefaultResponseDto.class),
+            @ApiResponse(code = 409, message = "이메일에러", response = DefaultResponseDto.class)
+    })
+    @PostMapping("/resetPasswordUsingToken")
+    public ResponseEntity<?> resetPasswordUsingToken(@RequestBody ResetPasswordRequestDto resetPasswordRequestDto) throws Exception {
+        return usersService.resetPasswordUsingToken(resetPasswordRequestDto);
+    }
+//    @ApiOperation(value = "비밀번호 재설정 링크 클릭하면 이 API로 요청이 오게 됩니다.\n" +
+//            "", notes = "파라미터를 검증하고 올바르다면 재설정 할 수 있는 재설정 링크로 리다이렉트 시켜줍니다.")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "비밀번호 재설정 페이지로 리다이렉트", response = DefaultResponseDto.class),
+//            @ApiResponse(code = 500, message = "서버에러", response = DefaultResponseDto.class)
+//    })
+//    @GetMapping("/confirmLink")
+//    public ResponseEntity<?> confirmLink(@RequestParam String token) throws ParseException {
+//        return usersService.confirmLink(token);
+//    }
 
     @ApiResponses({
             @ApiResponse(code = 200, message = "정상적으로 회원가입", response = DefaultResponseDto.class)
@@ -114,8 +144,10 @@ public class Api_V1 {
     })
     @ApiOperation(value = "로그아웃 api", notes = "헤더에 jwt, refreshJwt를 넣어서 보내주세요.")
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(@RequestHeader @RequestParam String jwt){
-        return usersService.logout(jwt);
+    public ResponseEntity<?> logout(@RequestBody JwtRequestDto jwtRequestDto){
+        log.info(jwtRequestDto.getJwt());
+        log.info(jwtRequestDto.getRefreshJwt());
+        return usersService.logout(jwtRequestDto);
     }
 
 }

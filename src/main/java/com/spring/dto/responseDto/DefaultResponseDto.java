@@ -26,4 +26,7 @@ public class DefaultResponseDto {
     public static ResponseEntity<?> canNotFindProfile(){
         return new ResponseEntity<>(new DefaultResponseDto(409, "Can't find profile"), HttpStatus.CONFLICT);
     }
+    public static ResponseEntity<?> canNotSendResetEmail(){
+        return new ResponseEntity<>(new DefaultResponseDto(409, "비밀번호 초기화 링크 전송에 실패했습니다."), HttpStatus.CONFLICT);
+    }
 }

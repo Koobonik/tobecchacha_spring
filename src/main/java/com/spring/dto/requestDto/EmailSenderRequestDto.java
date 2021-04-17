@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @NoArgsConstructor
 public class EmailSenderRequestDto {
     // Model 에 보이는 설명들.
-    @ApiModelProperty(example = "mango@naver.com", value = "받는 사람의 이메일 주소", required = true)
+    @ApiModelProperty(example = "abcd123@abcd123.com", value = "받는 사람의 이메일 주소", required = true)
     private String recipient;
 
     @ApiModelProperty(example = "계정을 활성화 하세요!", value = "이메일 제목", required = true)

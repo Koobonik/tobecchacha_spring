@@ -22,6 +22,7 @@ public class AES256Cipher {
 
     private String secretKey; //32bit
     private String IV; //16bit
+    private String url;
 
 //    public AES256Cipher getInstance() {
 //        if (INSTANCE == null) {
@@ -37,6 +38,7 @@ public class AES256Cipher {
         this.secretKey = applicationAESRead.getSecretkey();
         this.IV = applicationAESRead.getIv();
         this.applicationAESRead = applicationAESRead;
+        this.url = applicationAESRead.getUrl();
         //IV = secretKey.substring(0,16);
     }
 
