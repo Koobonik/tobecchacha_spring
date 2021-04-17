@@ -18,13 +18,13 @@ public class DefaultResponseDto {
     private String message;
 
     public static ResponseEntity<?> canNotFindAccount(){
-        return new ResponseEntity<>(new DefaultResponseDto(409, "Can't find account"), HttpStatus.CONFLICT);
+        return new ResponseEntity<>(new DefaultResponseDto(409, "계정이 일치하지 않습니다."), HttpStatus.CONFLICT);
     }
     public static ResponseEntity<?> canNotMatchedAccount(){
-        return new ResponseEntity<>(new DefaultResponseDto(409, "Can't find matched account"), HttpStatus.CONFLICT);
+        return new ResponseEntity<>(new DefaultResponseDto(409, "계정이 일치하지 않습니다."), HttpStatus.CONFLICT);
     }
     public static ResponseEntity<?> canNotFindProfile(){
-        return new ResponseEntity<>(new DefaultResponseDto(409, "Can't find profile"), HttpStatus.CONFLICT);
+        return new ResponseEntity<>(new DefaultResponseDto(409, "프로필 정보를 가져올 수 없습니다."), HttpStatus.CONFLICT);
     }
     public static ResponseEntity<?> canNotSendResetEmail(){
         return new ResponseEntity<>(new DefaultResponseDto(409, "비밀번호 초기화 링크 전송에 실패했습니다."), HttpStatus.CONFLICT);
