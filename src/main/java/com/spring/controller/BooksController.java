@@ -1,0 +1,46 @@
+package com.spring.controller;
+
+import com.spring.dto.responseDto.DefaultResponseDto;
+import com.spring.service.BooksService;
+import com.spring.util.jwt.JwtTokenProvider;
+import io.swagger.annotations.*;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@Log4j2
+@RestController
+@RequiredArgsConstructor
+@Api(value = "books API", tags = "books 카테고리 관련 api")
+@RequestMapping("api/v1/books")
+public class BooksController {
+
+    private final JwtTokenProvider jwtTokenProvider;
+    private final BooksService booksService;
+    @ApiOperation(value = "HTTP GET EXAMPLE", notes = "GET 요청에 대한 예제 입니다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 500, message = "서버에러"),
+            @ApiResponse(code = 404, message = "찾을 수 없음")
+    })
+    @RequestMapping(value = "/", method = {RequestMethod.GET, RequestMethod.POST})
+    public @ResponseBody String main(@ApiParam(value = "테스트 파라미터_1", required = true, example = "test_parameter_1") @RequestParam String test1,
+                                     @ApiParam(value = "테스트 파라미터_2", required = true, example = "test_parameter_2") @RequestParam String test2) {
+        return test1 + " : " + test2;
+    }
+
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "books를 반환 해줌.", response = DefaultResponseDto.class)
+    })
+    @ApiOperation(value = "책들을 반환해주는 api", notes = "")
+    @GetMapping("/getBooks/{page}/{size}")
+    public ResponseEntity<?> sendEmailForAuthEmail(
+            @ApiParam(value = "page", required = true, example = "page") @PathVariable("page") int page,
+            @ApiParam(value = "size", required = true, example = "size") @PathVariable("size") int size){
+
+        return new ResponseEntity<>(booksService.findAllPageSize(page, size), HttpStatus.OK);
+    }
+
+}
