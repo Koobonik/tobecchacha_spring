@@ -40,7 +40,7 @@ public class Books extends BaseTimeEntity {
     private float depth; // 두께
     @Column(nullable = true)
     private String publishingHouse; // 출판사
-
+    @Column(unique = true)
     private String ISBN; // 책 일련번호
     @Column(nullable = true)
     private int pages;
@@ -48,5 +48,9 @@ public class Books extends BaseTimeEntity {
     private String tableOfContent;
     @Column(nullable = true)
     private String nPayLink;
+
+    @Column(nullable = true)
+    private Boolean isShow = true;
+
 
 }

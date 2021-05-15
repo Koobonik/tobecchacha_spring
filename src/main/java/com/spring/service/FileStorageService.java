@@ -1,16 +1,19 @@
 package com.spring.service;
 
+import com.spring.dto.responseDto.UploadFileResponse;
 import com.spring.model.FileInfo;
 import com.spring.model.FileInfoRepository;
 import com.spring.service.exception.FileStorageException;
 import com.spring.service.exception.MyFileNotFoundException;
 import com.spring.util.yml.FileStorageProperties;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -21,6 +24,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
 @Service
+@Log4j2
 public class FileStorageService {
 
     private final Path fileStorageLocation;
@@ -88,5 +92,14 @@ public class FileStorageService {
         } catch (MalformedURLException ex) {
             throw new MyFileNotFoundException("File not found " + fileName, ex);
         }
+    }
+
+    public UploadFileResponse saveFile(MultipartFile file){
+        String fileName = storeFile(file);
+        log.info(fileName);
+        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/file/downloadFile/")
+                .path(fileName).toUriString();
+        saveFileInfo(fileName, fileDownloadUri, file.getContentType(), file.getSize());
+        return new UploadFileResponse(fileName, fileDownloadUri, file.getContentType(), file.getSize());
     }
 }

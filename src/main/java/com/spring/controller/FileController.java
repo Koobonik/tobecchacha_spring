@@ -31,18 +31,18 @@ public class FileController {
 
     @RequestMapping(value = "/uploadFile", method = {RequestMethod.GET, RequestMethod.POST})
     public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
-        String fileName = fileStorageService.storeFile(file);
-        log.info(fileName);
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/file/downloadFile/")
-                .path(fileName).toUriString();
-        fileStorageService.saveFileInfo(fileName, fileDownloadUri, file.getContentType(), file.getSize());
-        return new UploadFileResponse(fileName, fileDownloadUri, file.getContentType(), file.getSize());
+//        String fileName = fileStorageService.storeFile(file);
+//        log.info(fileName);
+//        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/file/downloadFile/")
+//                .path(fileName).toUriString();
+//        fileStorageService.saveFileInfo(fileName, fileDownloadUri, file.getContentType(), file.getSize());
+        return fileStorageService.saveFile(file);
     }
 
-    @PostMapping("/uploadMultipleFiles")
+    @RequestMapping(value = "/uploadMultipleFiles", method = {RequestMethod.GET, RequestMethod.POST})
     public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
         log.info("들어올 겨를도 없었구만");
-        return Arrays.asList(files).stream().map(file -> {
+        return Arrays.stream(files).map(file -> {
             try {
                 log.info("여기 뜨나?");
                 return uploadFile(file);
