@@ -32,4 +32,7 @@ public class DefaultResponseDto {
     public static ResponseEntity<?> canNotCreateBook(){
         return new ResponseEntity<>(new DefaultResponseDto(409, "책 정보를 생성하는데 실패했습니다."), HttpStatus.CONFLICT);
     }
+    public static ResponseEntity<?> canNotFindBook(){
+        return new ResponseEntity<>(new DefaultResponseDto(409, "책 정보가 올바르지 않습니다."), HttpStatus.CONFLICT);
+    }
 }

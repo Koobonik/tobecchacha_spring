@@ -28,4 +28,10 @@ public class BooksService {
         Books books1 = booksRepository.save(books);
         return new ResponseEntity<>(books1, HttpStatus.OK);
     }
+
+    public ResponseEntity<?> getBook(int id){
+        Books book = booksRepository.findById(id);
+        if(book == null) return DefaultResponseDto.canNotFindBook();
+        return new ResponseEntity<>(booksRepository.findById(id), HttpStatus.OK);
+    }
 }

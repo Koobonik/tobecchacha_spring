@@ -51,6 +51,17 @@ public class BooksController {
     }
 
     @ApiResponses({
+            @ApiResponse(code = 200, message = "books를 반환 해줌.", response = DefaultResponseDto.class)
+    })
+    @ApiOperation(value = "책에대한 디테일을 반환해주는 api", notes = "")
+    @GetMapping("/getBookDetail/{id}")
+    public ResponseEntity<?> sendEmailForAuthEmail(
+            @ApiParam(value = "id", required = true, example = "id") @PathVariable("id") int id){
+
+        return booksService.getBook(id);
+    }
+
+    @ApiResponses({
             @ApiResponse(code = 200, message = "책을 잘 생성하면 객체를 반환 해줌.", response = DefaultResponseDto.class)
     })
     @ApiOperation(value = "책 정보를 생성해주는 api", notes = "")
