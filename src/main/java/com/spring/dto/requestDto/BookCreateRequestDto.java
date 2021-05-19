@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.Column;
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,12 +48,20 @@ public class BookCreateRequestDto {
     private String publishingHouse; // 출판사사
     @ApiModelProperty(example = "abcd-efg-123-4567", value = "책의 일련번호", required = true)
     private String ISBN; // 책 일련번호
+    @ApiModelProperty(example = "상철", value = "책의 제본", required = true)
+    private String bookBinding; // 책 제본
     @ApiModelProperty(example = "167", value = "책의 페이지 수", required = true)
     private int pages;
     @ApiModelProperty(example = "알아서 입력하시오", value = "책의 목차", required = true)
     private String tableOfContent;
     @ApiModelProperty(example = "https", value = "네이버 스토어 링크", required = true)
     private String nPayLink;
+    @ApiModelProperty(example = "초판", value = "초판", required = true)
+    private String edition;
+    @ApiModelProperty(example = "1", value = "1쇄", required = true)
+    private int editionNumber;
+    @ApiModelProperty(example = "2021-05-15", value = "책이 만들어진 날", required = true)
+    private LocalDateTime createdDate;
 
 
     public Books toEntity(List<String> imagesParam){
@@ -71,6 +80,10 @@ public class BookCreateRequestDto {
                 .tableOfContent(tableOfContent)
                 .isShow(true)
                 .images(imagesParam)
+                .bookBinding(bookBinding)
+                .edition(edition)
+                .editionNumber(editionNumber)
+                .createdDate(createdDate)
                 .build();
     }
 

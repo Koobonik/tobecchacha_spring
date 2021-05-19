@@ -2,6 +2,7 @@ package com.spring.model;
 
 import lombok.*;
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,9 @@ public class Books extends BaseTimeEntity {
     @Column(nullable = false)
     private String createdWho; // 지은이
 
+    @Column(nullable = false)
+    private LocalDateTime createdDate; // 책이 만들어진 날
+
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(nullable = false)
     private List<String> images = new ArrayList<>(); // 이미지들
@@ -42,12 +46,20 @@ public class Books extends BaseTimeEntity {
     private String publishingHouse; // 출판사
     @Column(unique = true)
     private String ISBN; // 책 일련번호
+    @Column(nullable = false)
+    private String bookBinding; // 책 제본 ex 상철
     @Column(nullable = true)
     private int pages;
     @Column(nullable = true)
     private String tableOfContent;
     @Column(nullable = true)
     private String nPayLink;
+
+    @Column(nullable = true)
+    private String edition;
+
+    @Column(nullable = true)
+    private int editionNumber;
 
     @Column(nullable = true)
     private Boolean isShow = true;
