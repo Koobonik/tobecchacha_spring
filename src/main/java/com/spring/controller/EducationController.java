@@ -1,8 +1,9 @@
 package com.spring.controller;
 
 import com.spring.dto.requestDto.BookCreateRequestDto;
+import com.spring.dto.requestDto.EducationCreateRequestDto;
 import com.spring.dto.responseDto.DefaultResponseDto;
-import com.spring.service.BooksService;
+import com.spring.service.EducationService;
 import com.spring.service.FileStorageService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -18,54 +19,43 @@ import java.util.List;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@Api(value = "books API", tags = "books 카테고리 관련 api")
-@RequestMapping("api/v1/books")
-public class BooksController {
+@Api(value = "education API", tags = "education 카테고리 관련 api")
+@RequestMapping("api/v1/education")
+public class EducationController {
 
-    private final BooksService booksService;
+    private final EducationService educationService;
     private final FileStorageService fileStorageService;
-    @ApiOperation(value = "HTTP GET EXAMPLE", notes = "GET 요청에 대한 예제 입니다.")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "성공"),
-            @ApiResponse(code = 500, message = "서버에러"),
-            @ApiResponse(code = 404, message = "찾을 수 없음")
-    })
-    @RequestMapping(value = "/", method = {RequestMethod.GET, RequestMethod.POST})
-    public @ResponseBody String main(@ApiParam(value = "테스트 파라미터_1", required = true, example = "test_parameter_1") @RequestParam String test1,
-                                     @ApiParam(value = "테스트 파라미터_2", required = true, example = "test_parameter_2") @RequestParam String test2) {
-        return test1 + " : " + test2;
-    }
 
     @ApiResponses({
-            @ApiResponse(code = 200, message = "books를 반환 해줌.", response = DefaultResponseDto.class)
+            @ApiResponse(code = 200, message = "education를 반환 해줌.", response = DefaultResponseDto.class)
     })
-    @ApiOperation(value = "책들을 반환해주는 api", notes = "")
-    @GetMapping("/getBooks/{page}/{size}")
+    @ApiOperation(value = "교육들을 반환해주는 api", notes = "")
+    @GetMapping("/getEducation/{page}/{size}")
     public ResponseEntity<?> sendEmailForAuthEmail(
             @ApiParam(value = "page", required = true, example = "page") @PathVariable("page") int page,
             @ApiParam(value = "size", required = true, example = "size") @PathVariable("size") int size){
 
-        return new ResponseEntity<>(booksService.findAllPageSize(page, size), HttpStatus.OK);
+        return new ResponseEntity<>(educationService.findAllPageSize(page, size), HttpStatus.OK);
     }
 
     @ApiResponses({
-            @ApiResponse(code = 200, message = "books를 반환 해줌.", response = DefaultResponseDto.class)
+            @ApiResponse(code = 200, message = "education를 반환 해줌.", response = DefaultResponseDto.class)
     })
-    @ApiOperation(value = "책에대한 디테일을 반환해주는 api", notes = "")
-    @GetMapping("/getBookDetail/{id}")
+    @ApiOperation(value = "교육에대한 디테일을 반환해주는 api", notes = "")
+    @GetMapping("/getEducationDetail/{id}")
     public ResponseEntity<?> sendEmailForAuthEmail(
             @ApiParam(value = "id", required = true, example = "id") @PathVariable("id") int id){
 
-        return booksService.getBook(id);
+        return educationService.getEducation(id);
     }
 
     @ApiResponses({
-            @ApiResponse(code = 200, message = "책을 잘 생성하면 객체를 반환 해줌.", response = DefaultResponseDto.class)
+            @ApiResponse(code = 200, message = "교육을 잘 생성하면 객체를 반환 해줌.", response = DefaultResponseDto.class)
     })
-    @ApiOperation(value = "책 정보를 생성해주는 api", notes = "")
-    @PostMapping("/getBooks/createBook")
-    @RequestMapping(value = "/getBooks/createBook", method = {RequestMethod.POST})
-    public ResponseEntity<?> createBook(@ModelAttribute BookCreateRequestDto bookCreateRequestDto,
+    @ApiOperation(value = "교육 정보를 생성해주는 api", notes = "")
+    @PostMapping("/getEducation/createBook")
+    @RequestMapping(value = "/getEducation/createBook", method = {RequestMethod.POST})
+    public ResponseEntity<?> createBook(@ModelAttribute EducationCreateRequestDto educationCreateRequestDto,
                                         @RequestParam(value = "images1") MultipartFile images1,
                                         @RequestParam(value = "images2", required = false) MultipartFile images2,
                                         @RequestParam(value = "images3", required = false) MultipartFile images3,
@@ -108,6 +98,7 @@ public class BooksController {
         if(images10 != null && !images10.isEmpty()){
             images_string.add(fileStorageService.saveFile(images10).getFileDownloadUri());
         }
-        return new ResponseEntity<>(booksService.createBook(bookCreateRequestDto.toEntity(images_string)), HttpStatus.OK);
+
+        return new ResponseEntity<>(educationService.createEducation(educationCreateRequestDto.toEntity(images_string)), HttpStatus.OK);
     }
 }
