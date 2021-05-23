@@ -30,6 +30,12 @@ public class Gallery extends BaseTimeEntity {
     @Column(nullable = false)
     private String createdWho; // 작가
 
+    @Column(nullable = false)
+    private String createdEmail; // 작가
+
+    @Column(nullable = false)
+    private LocalDateTime createdDate; // 찍힌 날
+
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(nullable = false)
     private List<String> images = new ArrayList<>(); // 이미지들
@@ -37,7 +43,8 @@ public class Gallery extends BaseTimeEntity {
     @ElementCollection(fetch = FetchType.LAZY)
     @Column(nullable = false)
     private List<String> imagesDescription = new ArrayList<>(); // 이미지들 텍스트
-
+    @Column(nullable = false)
+    private String information;
     @Column(nullable = true)
     private float width; // 가로 길이
     @Column(nullable = true)
