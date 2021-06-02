@@ -61,7 +61,7 @@ public class BookCreateRequestDto {
     @ApiModelProperty(example = "1", value = "1쇄", required = true)
     private int editionNumber;
     @ApiModelProperty(example = "2021-05-15", value = "책이 만들어진 날", required = true)
-    private LocalDateTime createdDate;
+    private String createdDate;
 
 
     public Books toEntity(List<String> imagesParam){

@@ -1,6 +1,8 @@
 package com.spring.model;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -30,7 +32,7 @@ public class Books extends BaseTimeEntity {
     private String createdWho; // 지은이
 
     @Column(nullable = false)
-    private LocalDateTime createdDate; // 책이 만들어진 날
+    private String createdDate; // 책이 만들어진 날
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(nullable = false)
