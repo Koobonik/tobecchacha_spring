@@ -45,7 +45,7 @@ public class GalleryCreateRequestDto {
     private String nPayLink;
     @ApiModelProperty(example = "사진집단 포토청 정기사진전 <서울의 경계에서> / 갤러리 류가헌", value = "전시 정보", required = true)
     private String information;
-    @ApiModelProperty(example = "이미지 설명들.", value = "책이 만들어진 날", required = true)
+    @ApiModelProperty(example = "이미지 설명들.쌸라쌸라", value = "이미지 설명들", required = true)
     private List<String> imagesDescription;
 
     @ApiModelProperty(example = "2021-05-15", value = "촬영된 날", required = true)
