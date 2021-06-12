@@ -49,7 +49,7 @@ public class GalleryCreateRequestDto {
     private List<String> imagesDescription;
 
     @ApiModelProperty(example = "2021-05-15", value = "촬영된 날", required = true)
-    private LocalDateTime createdDate;
+    private String createdDate;
 
 
     public Gallery toEntity(List<String> imagesParam){

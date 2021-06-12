@@ -34,7 +34,7 @@ public class Gallery extends BaseTimeEntity {
     private String createdEmail; // 작가
 
     @Column(nullable = false)
-    private LocalDateTime createdDate; // 찍힌 날
+    private String createdDate; // 찍힌 날
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(nullable = false)
