@@ -32,6 +32,6 @@ public class BooksService {
     public ResponseEntity<?> getBook(int id){
         Books book = booksRepository.findById(id);
         if(book == null) return DefaultResponseDto.canNotFindBook();
-        return new ResponseEntity<>(booksRepository.findById(id), HttpStatus.OK);
+        return new ResponseEntity<>(book, HttpStatus.OK);
     }
 }

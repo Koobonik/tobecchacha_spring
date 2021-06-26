@@ -33,6 +33,6 @@ public class EducationService {
     public ResponseEntity<?> getEducation(int id){
         Education education = educationRepository.findById(id);
         if(education == null) return DefaultResponseDto.canNotFindBook();
-        return new ResponseEntity<>(educationRepository.findById(id), HttpStatus.OK);
+        return new ResponseEntity<>(education, HttpStatus.OK);
     }
 }

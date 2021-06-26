@@ -52,8 +52,8 @@ public class GalleryController {
             @ApiResponse(code = 200, message = "갤러리를 잘 생성하면 객체를 반환 해줌.", response = DefaultResponseDto.class)
     })
     @ApiOperation(value = "갤러리 정보를 생성해주는 api", notes = "")
-    @PostMapping("/getGallery/createGallery")
-    @RequestMapping(value = "/getGallery/createGallery", method = {RequestMethod.POST})
+    @PostMapping("/createGallery")
+    @RequestMapping(value = "/createGallery", method = {RequestMethod.POST})
     public ResponseEntity<?> createBook(@ModelAttribute GalleryCreateRequestDto galleryCreateRequestDto,
                                         @RequestParam(value = "images1") MultipartFile images1,
                                         @RequestParam(value = "images2", required = false) MultipartFile images2,

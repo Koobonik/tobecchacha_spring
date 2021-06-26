@@ -63,8 +63,8 @@ public class BooksController {
             @ApiResponse(code = 200, message = "책을 잘 생성하면 객체를 반환 해줌.", response = DefaultResponseDto.class)
     })
     @ApiOperation(value = "책 정보를 생성해주는 api", notes = "")
-    @PostMapping("/getBooks/createBook")
-    @RequestMapping(value = "/getBooks/createBook", method = {RequestMethod.POST})
+    @PostMapping("/createBook")
+    @RequestMapping(value = "/createBook", method = {RequestMethod.POST})
     public ResponseEntity<?> createBook(@ModelAttribute BookCreateRequestDto bookCreateRequestDto,
                                         @RequestParam(value = "images1") MultipartFile images1,
                                         @RequestParam(value = "images2", required = false) MultipartFile images2,

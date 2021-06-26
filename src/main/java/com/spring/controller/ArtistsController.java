@@ -1,10 +1,9 @@
 package com.spring.controller;
 
-import com.spring.dto.requestDto.BookCreateRequestDto;
-import com.spring.dto.requestDto.EducationCreateRequestDto;
+import com.spring.dto.requestDto.GalleryCreateRequestDto;
 import com.spring.dto.responseDto.DefaultResponseDto;
-import com.spring.service.EducationService;
 import com.spring.service.FileStorageService;
+import com.spring.service.GalleryService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -19,43 +18,43 @@ import java.util.List;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@Api(value = "education API", tags = "education 카테고리 관련 api")
-@RequestMapping("api/v1/education")
-public class EducationController {
+@Api(value = "artists API", tags = "아티스트 관련 api")
+@RequestMapping("api/v1/artists")
+public class ArtistsController {
 
-    private final EducationService educationService;
+    private final GalleryService galleryService;
     private final FileStorageService fileStorageService;
 
     @ApiResponses({
-            @ApiResponse(code = 200, message = "education를 반환 해줌.", response = DefaultResponseDto.class)
+            @ApiResponse(code = 200, message = "artists를 반환 해줌.", response = DefaultResponseDto.class)
     })
-    @ApiOperation(value = "교육들을 반환해주는 api", notes = "")
-    @GetMapping("/getEducation/{page}/{size}")
+    @ApiOperation(value = "artists를 반환해주는 api", notes = "")
+    @GetMapping("/getArtists/{page}/{size}")
     public ResponseEntity<?> sendEmailForAuthEmail(
             @ApiParam(value = "page", required = true, example = "page") @PathVariable("page") int page,
             @ApiParam(value = "size", required = true, example = "size") @PathVariable("size") int size){
 
-        return new ResponseEntity<>(educationService.findAllPageSize(page, size), HttpStatus.OK);
+        return new ResponseEntity<>(galleryService.findAllPageSize(page, size), HttpStatus.OK);
     }
 
     @ApiResponses({
-            @ApiResponse(code = 200, message = "education를 반환 해줌.", response = DefaultResponseDto.class)
+            @ApiResponse(code = 200, message = "gallery를 반환 해줌.", response = DefaultResponseDto.class)
     })
-    @ApiOperation(value = "교육에대한 디테일을 반환해주는 api", notes = "")
-    @GetMapping("/getEducationDetail/{id}")
+    @ApiOperation(value = "갤러리에 대한 디테일을 반환해주는 api", notes = "")
+    @GetMapping("/getArtistsDetail/{id}")
     public ResponseEntity<?> sendEmailForAuthEmail(
             @ApiParam(value = "id", required = true, example = "id") @PathVariable("id") int id){
 
-        return educationService.getEducation(id);
+        return galleryService.getGallery(id);
     }
 
     @ApiResponses({
-            @ApiResponse(code = 200, message = "교육을 잘 생성하면 객체를 반환 해줌.", response = DefaultResponseDto.class)
+            @ApiResponse(code = 200, message = "Artists를 잘 생성하면 객체를 반환 해줌.", response = DefaultResponseDto.class)
     })
-    @ApiOperation(value = "교육 정보를 생성해주는 api", notes = "")
-    @PostMapping("/createEducation")
-    @RequestMapping(value = "/createEducation", method = {RequestMethod.POST})
-    public ResponseEntity<?> createBook(@ModelAttribute EducationCreateRequestDto educationCreateRequestDto,
+    @ApiOperation(value = "Artists 정보를 생성해주는 api", notes = "")
+    @PostMapping("/createArtists")
+    @RequestMapping(value = "/createArtists", method = {RequestMethod.POST})
+    public ResponseEntity<?> createBook(@ModelAttribute GalleryCreateRequestDto galleryCreateRequestDto,
                                         @RequestParam(value = "images1") MultipartFile images1,
                                         @RequestParam(value = "images2", required = false) MultipartFile images2,
                                         @RequestParam(value = "images3", required = false) MultipartFile images3,
@@ -65,7 +64,9 @@ public class EducationController {
                                         @RequestParam(value = "images7", required = false) MultipartFile images7,
                                         @RequestParam(value = "images8", required = false) MultipartFile images8,
                                         @RequestParam(value = "images9", required = false) MultipartFile images9,
-                                        @RequestParam(value = "images10", required = false) MultipartFile images10
+                                        @RequestParam(value = "images10", required = false) MultipartFile images10,
+                                        @RequestParam(value = "images11", required = false) MultipartFile images11,
+                                        @RequestParam(value = "images12", required = false) MultipartFile images12
     ){
         List<String> images_string = new ArrayList<>();
         if(images1 != null && !images1.isEmpty()){
@@ -98,7 +99,12 @@ public class EducationController {
         if(images10 != null && !images10.isEmpty()){
             images_string.add(fileStorageService.saveFile(images10).getFileDownloadUri());
         }
-
-        return new ResponseEntity<>(educationService.createEducation(educationCreateRequestDto.toEntity(images_string)), HttpStatus.OK);
+        if(images11 != null && !images11.isEmpty()){
+            images_string.add(fileStorageService.saveFile(images11).getFileDownloadUri());
+        }
+        if(images12 != null && !images12.isEmpty()){
+            images_string.add(fileStorageService.saveFile(images12).getFileDownloadUri());
+        }
+        return new ResponseEntity<>(galleryService.createGallery(galleryCreateRequestDto.toEntity(images_string)), HttpStatus.OK);
     }
 }

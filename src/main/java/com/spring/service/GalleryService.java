@@ -33,6 +33,6 @@ public class GalleryService {
     public ResponseEntity<?> getGallery(int id){
         Gallery gallery = galleryRepository.findById(id);
         if(gallery == null) return DefaultResponseDto.canNotFindBook();
-        return new ResponseEntity<>(galleryRepository.findById(id), HttpStatus.OK);
+        return new ResponseEntity<>(gallery, HttpStatus.OK);
     }
 }
