@@ -25,16 +25,16 @@ public class GalleryCreateRequestDto {
     @ApiModelProperty(example = "35000", value = "숫자만 입력", required = true)
     private int price;
 
-    @ApiModelProperty(example = "성애쌤의 해외 봉사 라이프", value = "책 제목", required = true)
+    @ApiModelProperty(example = "성애쌤의 해외 봉사 라이프", value = "제목", required = true)
     private String title;
 
-    @ApiModelProperty(example = "철수가 무겁게 입을 열었다\n여름이었다.", value = "책에 대한 설명", required = true)
+    @ApiModelProperty(example = "철수가 무겁게 입을 열었다\n여름이었다.", value = "작품 설명", required = true)
     private String content;
 
-    @ApiModelProperty(example = "김성애", value = "작가 이름", required = true)
+    @ApiModelProperty(example = "김성애", value = "성명", required = true)
     private String createdWho;
 
-    @ApiModelProperty(example = "김성애", value = "작가 이메일", required = true)
+    @ApiModelProperty(example = "김성애", value = "구매 문의", required = true)
     private String createdEmail;
 
     @ApiModelProperty(example = "3.5", value = "책의 가로 길이", required = true)
@@ -43,12 +43,12 @@ public class GalleryCreateRequestDto {
     private float height; // 세로 길이
     @ApiModelProperty(example = "https", value = "네이버 스토어 링크", required = true)
     private String nPayLink;
-    @ApiModelProperty(example = "사진집단 포토청 정기사진전 <서울의 경계에서> / 갤러리 류가헌", value = "전시 정보", required = true)
+    @ApiModelProperty(example = "사진집단 포토청 정기사진전 <서울의 경계에서> / 갤러리 류가헌", value = "작품 정보", required = true)
     private String information;
     @ApiModelProperty(example = "이미지 설명들.쌸라쌸라", value = "이미지 설명들", required = true)
     private List<String> imagesDescription;
 
-    @ApiModelProperty(example = "2021-05-15", value = "촬영된 날", required = true)
+    @ApiModelProperty(example = "2021-05-15", value = "전시 정보 날짜", required = true)
     private String createdDate;
 
 
