@@ -1,9 +1,9 @@
 package com.spring.controller;
 
-import com.spring.dto.requestDto.GalleryCreateRequestDto;
+import com.spring.dto.requestDto.ArtistsCreateRequestDto;
 import com.spring.dto.responseDto.DefaultResponseDto;
+import com.spring.service.ArtistsService;
 import com.spring.service.FileStorageService;
-import com.spring.service.GalleryService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -22,7 +22,7 @@ import java.util.List;
 @RequestMapping("api/v1/artists")
 public class ArtistsController {
 
-    private final GalleryService galleryService;
+    private final ArtistsService artistsService;
     private final FileStorageService fileStorageService;
 
     @ApiResponses({
@@ -34,7 +34,7 @@ public class ArtistsController {
             @ApiParam(value = "page", required = true, example = "page") @PathVariable("page") int page,
             @ApiParam(value = "size", required = true, example = "size") @PathVariable("size") int size){
 
-        return new ResponseEntity<>(galleryService.findAllPageSize(page, size), HttpStatus.OK);
+        return new ResponseEntity<>(artistsService.findAllPageSize(page, size), HttpStatus.OK);
     }
 
     @ApiResponses({
@@ -45,7 +45,7 @@ public class ArtistsController {
     public ResponseEntity<?> sendEmailForAuthEmail(
             @ApiParam(value = "id", required = true, example = "id") @PathVariable("id") int id){
 
-        return galleryService.getGallery(id);
+        return artistsService.getArtists(id);
     }
 
     @ApiResponses({
@@ -54,7 +54,8 @@ public class ArtistsController {
     @ApiOperation(value = "Artists 정보를 생성해주는 api", notes = "")
     @PostMapping("/createArtists")
     @RequestMapping(value = "/createArtists", method = {RequestMethod.POST})
-    public ResponseEntity<?> createBook(@ModelAttribute GalleryCreateRequestDto galleryCreateRequestDto,
+    public ResponseEntity<?> createBook(@ModelAttribute ArtistsCreateRequestDto artistsCreateRequestDto,
+                                        @RequestParam(value = "image") MultipartFile image,
                                         @RequestParam(value = "images1") MultipartFile images1,
                                         @RequestParam(value = "images2", required = false) MultipartFile images2,
                                         @RequestParam(value = "images3", required = false) MultipartFile images3,
@@ -69,6 +70,10 @@ public class ArtistsController {
                                         @RequestParam(value = "images12", required = false) MultipartFile images12
     ){
         List<String> images_string = new ArrayList<>();
+        String imageUrl = "";
+        if(image != null && !image.isEmpty()){
+            imageUrl = fileStorageService.saveFile(image).getFileDownloadUri();
+        }
         if(images1 != null && !images1.isEmpty()){
             images_string.add(fileStorageService.saveFile(images1).getFileDownloadUri());
         }
@@ -105,6 +110,6 @@ public class ArtistsController {
         if(images12 != null && !images12.isEmpty()){
             images_string.add(fileStorageService.saveFile(images12).getFileDownloadUri());
         }
-        return new ResponseEntity<>(galleryService.createGallery(galleryCreateRequestDto.toEntity(images_string)), HttpStatus.OK);
+        return new ResponseEntity<>(artistsService.createArtists(artistsCreateRequestDto.toEntity(images_string, imageUrl)), HttpStatus.OK);
     }
 }
