@@ -27,12 +27,12 @@ public class ArtistsCreateRequestDto {
     @ApiModelProperty(example = "김성애", value = "성명", required = true)
     private String name;
 
-    @ApiModelProperty(example = "김성애", value = "구매 문의", required = true)
+    @ApiModelProperty(example = "abcd@naver.com", value = "연락처", required = true)
     private String email;
 
-    @ApiModelProperty(example = "https", value = "네이버 스토어 링크", required = true)
+    @ApiModelProperty(example = "포토그래퍼", value = "직업", required = true)
     private String job;
-    @ApiModelProperty(example = "사진집단 포토청 정기사진전 <서울의 경계에서> / 갤러리 류가헌", value = "작품 정보", required = true)
+    @ApiModelProperty(example = "사진 한장에 많은 의미를 담고자 노력하는 사진 작가 입니다.", value = "작가에 대한 소개", required = true)
     private String introduce;
 
 
