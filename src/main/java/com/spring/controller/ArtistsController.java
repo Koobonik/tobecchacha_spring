@@ -40,7 +40,7 @@ public class ArtistsController {
     @ApiResponses({
             @ApiResponse(code = 200, message = "gallery를 반환 해줌.", response = DefaultResponseDto.class)
     })
-    @ApiOperation(value = "갤러리에 대한 디테일을 반환해주는 api", notes = "")
+    @ApiOperation(value = "아티스트에 대한 디테일을 반환해주는 api", notes = "")
     @GetMapping("/getArtistsDetail/{id}")
     public ResponseEntity<?> sendEmailForAuthEmail(
             @ApiParam(value = "id", required = true, example = "id") @PathVariable("id") int id){
