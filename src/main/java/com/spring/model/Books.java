@@ -25,6 +25,9 @@ public class Books extends BaseTimeEntity {
     @Column(nullable = false)
     private String title; // 책 제목
 
+    @Column(columnDefinition = "TEXT")
+    private String subTitle = ""; // 소제목
+
     @Column(nullable = false)
     private String content; // 책 내용
 
@@ -44,6 +47,8 @@ public class Books extends BaseTimeEntity {
     private float height; // 세로 길이
     @Column(nullable = true)
     private float depth; // 두께
+    @Column(nullable = true)
+    private int weight; // 두께
     @Column(nullable = true)
     private String publishingHouse; // 출판사
     @Column(unique = true)

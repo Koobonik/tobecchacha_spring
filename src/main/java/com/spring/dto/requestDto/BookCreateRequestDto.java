@@ -32,6 +32,9 @@ public class BookCreateRequestDto {
     @ApiModelProperty(example = "성애쌤의 해외 봉사 라이프", value = "책 제목", required = true)
     private String title;
 
+    @ApiModelProperty(example = "나현호 사진집 | 천천히 걸으며 기록하다", value = "소제목", required = false)
+    private String subTitle;
+
     @ApiModelProperty(example = "철수가 무겁게 입을 열었다\n여름이었다.", value = "책에 대한 설명", required = true)
     private String content;
 
@@ -44,6 +47,8 @@ public class BookCreateRequestDto {
     private float height; // 세로 길이
     @ApiModelProperty(example = "3.5", value = "책의 두께", required = true)
     private float depth; // 두께
+    @ApiModelProperty(example = "425", value = "책의 무게", required = true)
+    private int weight; // 무게
     @ApiModelProperty(example = "3.5", value = "차차 출판", required = true)
     private String publishingHouse; // 출판사사
     @ApiModelProperty(example = "abcd-efg-123-4567", value = "책의 일련번호", required = true)
@@ -69,11 +74,13 @@ public class BookCreateRequestDto {
         return Books.builder()
                 .price(price)
                 .title(title)
+                .subTitle(subTitle)
                 .content(content)
                 .createdWho(createdWho)
                 .width(width)
                 .height(height)
                 .depth(depth)
+                .weight(weight)
                 .publishingHouse(publishingHouse)
                 .ISBN(ISBN)
                 .nPayLink(nPayLink)
