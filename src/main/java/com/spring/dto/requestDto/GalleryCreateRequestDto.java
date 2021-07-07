@@ -28,6 +28,9 @@ public class GalleryCreateRequestDto {
     @ApiModelProperty(example = "성애쌤의 해외 봉사 라이프", value = "제목", required = true)
     private String title;
 
+    @ApiModelProperty(example = "사진속에서 나를 바라보다", value = "부제", required = false)
+    private String subTitle;
+
     @ApiModelProperty(example = "철수가 무겁게 입을 열었다\n여름이었다.", value = "작품 설명", required = true)
     private String content;
 
@@ -57,6 +60,7 @@ public class GalleryCreateRequestDto {
         return Gallery.builder()
                 .price(price)
                 .title(title)
+                .subTitle(subTitle)
                 .content(content)
                 .createdWho(createdWho)
                 .width(width)

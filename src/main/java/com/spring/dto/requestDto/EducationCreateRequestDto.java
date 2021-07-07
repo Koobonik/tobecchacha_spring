@@ -28,6 +28,9 @@ public class EducationCreateRequestDto {
     @ApiModelProperty(example = "심리적 독립을 위한 스케치", value = "교육 타이틀", required = true)
     private String title;
 
+    @ApiModelProperty(example = "다함께 재밌게 놀아보아요", value = "교육 서브 타이틀", required = false)
+    private String subTitle;
+
     @ApiModelProperty(example = "여행 드오링 키트를 제공하여...", value = "교육에 대한 설명", required = true)
     private String content;
 
@@ -42,6 +45,7 @@ public class EducationCreateRequestDto {
         return Education.builder()
                 .price(price)
                 .title(title)
+                .subTitle(subTitle)
                 .content(content)
                 .withWho(withWho)
                 .introduction(introduction)

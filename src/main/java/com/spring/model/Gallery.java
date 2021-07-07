@@ -25,6 +25,9 @@ public class Gallery extends BaseTimeEntity {
     @Column(nullable = false)
     private String title; // 책 제목
 
+    @Column(nullable = true)
+    private String subTitle; // 부제목
+
     @Column(nullable = false)
     private String content; // 책 내용
 
