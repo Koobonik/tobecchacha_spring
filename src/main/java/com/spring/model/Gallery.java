@@ -19,6 +19,7 @@ public class Gallery extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
+    @Column(nullable = true)
     private int price; // 책 가격
 
     @Column(nullable = false)
