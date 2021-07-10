@@ -30,7 +30,7 @@ public class GalleryController {
     })
     @ApiOperation(value = "갤러리들을 반환해주는 api", notes = "")
     @GetMapping("/getGallery/{page}/{size}")
-    public ResponseEntity<?> sendEmailForAuthEmail(
+    public ResponseEntity<?> getGallery(
             @ApiParam(value = "page", required = true, example = "page") @PathVariable("page") int page,
             @ApiParam(value = "size", required = true, example = "size") @PathVariable("size") int size){
 
@@ -42,7 +42,7 @@ public class GalleryController {
     })
     @ApiOperation(value = "갤러리에 대한 디테일을 반환해주는 api", notes = "")
     @GetMapping("/getGalleryDetail/{id}")
-    public ResponseEntity<?> sendEmailForAuthEmail(
+    public ResponseEntity<?> getGalleryDetail(
             @ApiParam(value = "id", required = true, example = "id") @PathVariable("id") int id){
 
         return galleryService.getGallery(id);
@@ -54,7 +54,7 @@ public class GalleryController {
     @ApiOperation(value = "갤러리 정보를 생성해주는 api", notes = "")
     @PostMapping("/createGallery")
     @RequestMapping(value = "/createGallery", method = {RequestMethod.POST})
-    public ResponseEntity<?> createBook(@ModelAttribute GalleryCreateRequestDto galleryCreateRequestDto,
+    public ResponseEntity<?> createGallery(@ModelAttribute GalleryCreateRequestDto galleryCreateRequestDto,
                                         @RequestParam(value = "images1") MultipartFile images1,
                                         @RequestParam(value = "images2", required = false) MultipartFile images2,
                                         @RequestParam(value = "images3", required = false) MultipartFile images3,

@@ -31,7 +31,7 @@ public class EducationController {
     })
     @ApiOperation(value = "교육들을 반환해주는 api", notes = "")
     @GetMapping("/getEducation/{page}/{size}")
-    public ResponseEntity<?> sendEmailForAuthEmail(
+    public ResponseEntity<?> getEducation(
             @ApiParam(value = "page", required = true, example = "page") @PathVariable("page") int page,
             @ApiParam(value = "size", required = true, example = "size") @PathVariable("size") int size){
 
@@ -43,7 +43,7 @@ public class EducationController {
     })
     @ApiOperation(value = "교육에대한 디테일을 반환해주는 api", notes = "")
     @GetMapping("/getEducationDetail/{id}")
-    public ResponseEntity<?> sendEmailForAuthEmail(
+    public ResponseEntity<?> getEducationDetail(
             @ApiParam(value = "id", required = true, example = "id") @PathVariable("id") int id){
 
         return educationService.getEducation(id);
@@ -55,7 +55,7 @@ public class EducationController {
     @ApiOperation(value = "교육 정보를 생성해주는 api", notes = "")
     @PostMapping("/createEducation")
     @RequestMapping(value = "/createEducation", method = {RequestMethod.POST})
-    public ResponseEntity<?> createBook(@ModelAttribute EducationCreateRequestDto educationCreateRequestDto,
+    public ResponseEntity<?> createEducation(@ModelAttribute EducationCreateRequestDto educationCreateRequestDto,
                                         @RequestParam(value = "images1") MultipartFile images1,
                                         @RequestParam(value = "images2", required = false) MultipartFile images2,
                                         @RequestParam(value = "images3", required = false) MultipartFile images3,

@@ -30,7 +30,7 @@ public class ArtistsController {
     })
     @ApiOperation(value = "artists를 반환해주는 api", notes = "")
     @GetMapping("/getArtists/{page}/{size}")
-    public ResponseEntity<?> sendEmailForAuthEmail(
+    public ResponseEntity<?> getArtists(
             @ApiParam(value = "page", required = true, example = "page") @PathVariable("page") int page,
             @ApiParam(value = "size", required = true, example = "size") @PathVariable("size") int size){
 
@@ -42,7 +42,7 @@ public class ArtistsController {
     })
     @ApiOperation(value = "아티스트에 대한 디테일을 반환해주는 api", notes = "")
     @GetMapping("/getArtistsDetail/{id}")
-    public ResponseEntity<?> sendEmailForAuthEmail(
+    public ResponseEntity<?> getArtistsDetail(
             @ApiParam(value = "id", required = true, example = "id") @PathVariable("id") int id){
 
         return artistsService.getArtists(id);
@@ -54,7 +54,7 @@ public class ArtistsController {
     @ApiOperation(value = "Artists 정보를 생성해주는 api", notes = "")
     @PostMapping("/createArtists")
     @RequestMapping(value = "/createArtists", method = {RequestMethod.POST})
-    public ResponseEntity<?> createBook(@ModelAttribute ArtistsCreateRequestDto artistsCreateRequestDto,
+    public ResponseEntity<?> createArtists(@ModelAttribute ArtistsCreateRequestDto artistsCreateRequestDto,
                                         @RequestParam(value = "image") MultipartFile image,
                                         @RequestParam(value = "images1") MultipartFile images1,
                                         @RequestParam(value = "images2", required = false) MultipartFile images2,

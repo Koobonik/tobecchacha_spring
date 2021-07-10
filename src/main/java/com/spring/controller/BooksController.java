@@ -41,7 +41,7 @@ public class BooksController {
     })
     @ApiOperation(value = "책들을 반환해주는 api", notes = "")
     @GetMapping("/getBooks/{page}/{size}")
-    public ResponseEntity<?> sendEmailForAuthEmail(
+    public ResponseEntity<?> getBooks(
             @ApiParam(value = "page", required = true, example = "page") @PathVariable("page") int page,
             @ApiParam(value = "size", required = true, example = "size") @PathVariable("size") int size){
 
@@ -53,7 +53,7 @@ public class BooksController {
     })
     @ApiOperation(value = "책에대한 디테일을 반환해주는 api", notes = "")
     @GetMapping("/getBookDetail/{id}")
-    public ResponseEntity<?> sendEmailForAuthEmail(
+    public ResponseEntity<?> getBookDetail(
             @ApiParam(value = "id", required = true, example = "id") @PathVariable("id") int id){
 
         return booksService.getBook(id);
