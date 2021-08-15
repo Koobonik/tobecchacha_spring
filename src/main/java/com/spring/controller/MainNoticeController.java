@@ -2,9 +2,10 @@ package com.spring.controller;
 
 import com.spring.dto.requestDto.ArtistsCreateRequestDto;
 import com.spring.dto.requestDto.MainNoticeCreateRequestDto;
+import com.spring.dto.responseDto.CurrentIdsResponseDto;
 import com.spring.dto.responseDto.DefaultResponseDto;
-import com.spring.service.FileStorageService;
-import com.spring.service.MainNoticeService;
+import com.spring.model.Gallery;
+import com.spring.service.*;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -26,6 +27,10 @@ public class MainNoticeController {
     private final MainNoticeService mainNoticeService;
     private final FileStorageService fileStorageService;
 
+    private final BooksService booksService;
+    private final GalleryService galleryService;
+    private final EducationService educationService;
+
     @ApiResponses({
             @ApiResponse(code = 200, message = "공지 반환 해줌.", response = DefaultResponseDto.class)
     })
@@ -38,7 +43,7 @@ public class MainNoticeController {
     }
 
     @ApiResponses({
-            @ApiResponse(code = 200, message = "gallery를 반환 해줌.", response = DefaultResponseDto.class)
+            @ApiResponse(code = 200, message = "공지 디테일을 반환 해줌.", response = DefaultResponseDto.class)
     })
     @ApiOperation(value = "공지에 대한 디테일을 반환해주는 api", notes = "")
     @GetMapping("/getMainNoticeDetail/{id}")
@@ -61,5 +66,19 @@ public class MainNoticeController {
             imageUrl = fileStorageService.saveFile(image).getFileDownloadUri();
         }
         return new ResponseEntity<>(mainNoticeService.createMainNotice(mainNoticeCreateRequestDto.toEntity(imageUrl)), HttpStatus.OK);
+    }
+
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "각 게시물의 최근 아이디들을 반환해줌.", response = DefaultResponseDto.class)
+    })
+    @ApiOperation(value = "각 게시물의 최근 아이디들을 반환해주는 api", notes = "")
+    @GetMapping("/getCurrentIds")
+    public ResponseEntity<?> getCurrentIds(){
+        CurrentIdsResponseDto currentIdsResponseDto = CurrentIdsResponseDto.builder()
+                .bookId(booksService.findAllPageSize(0,1).get(0).getId())
+                .educationId(educationService.findAllPageSize(0,1).get(0).getId())
+                .galleryId(galleryService.findAllPageSize(0,1).get(0).getId())
+                .build();
+        return new ResponseEntity<>(currentIdsResponseDto, HttpStatus.OK);
     }
 }
