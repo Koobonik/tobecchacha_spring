@@ -23,7 +23,7 @@ public class GalleryService {
 
     public List<Gallery> findAllPageSize(int page, int size){
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("createdAt").descending());
-        return galleryRepository.findAll(pageRequest).getContent();
+        return galleryRepository.findAllByIsShow(true, pageRequest);
     }
     public ResponseEntity<?> createGallery(Gallery gallery){
         Gallery gallery1 = galleryRepository.save(gallery);

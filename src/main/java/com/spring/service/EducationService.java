@@ -23,7 +23,7 @@ public class EducationService {
 
     public List<Education> findAllPageSize(int page, int size){
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("createdAt").descending());
-        return educationRepository.findAll(pageRequest).getContent();
+        return educationRepository.findAllByIsShow(true,pageRequest);
     }
     public ResponseEntity<?> createEducation(Education education){
         Education books1 = educationRepository.save(education);

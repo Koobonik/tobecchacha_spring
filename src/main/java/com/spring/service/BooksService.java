@@ -22,7 +22,7 @@ public class BooksService {
 
     public List<Books> findAllPageSize(int page, int size){
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by("createdAt").descending());
-        return booksRepository.findAll(pageRequest).getContent();
+        return booksRepository.findAllByIsShow(true,pageRequest);
     }
     public ResponseEntity<?> createBook(Books books){
         Books books1 = booksRepository.save(books);
