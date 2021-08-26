@@ -30,6 +30,7 @@ public class MainNoticeController {
     private final BooksService booksService;
     private final GalleryService galleryService;
     private final EducationService educationService;
+    private final EtcService etcService;
 
     @ApiResponses({
             @ApiResponse(code = 200, message = "공지 반환 해줌.", response = DefaultResponseDto.class)
@@ -78,6 +79,7 @@ public class MainNoticeController {
                 .bookId(booksService.findAllPageSize(0,1).get(0).getId())
                 .educationId(educationService.findAllPageSize(0,1).get(0).getId())
                 .galleryId(galleryService.findAllPageSize(0,1).get(0).getId())
+                .etcId(etcService.findAllPageSize(0,1).get(0).getId())
                 .build();
         return new ResponseEntity<>(currentIdsResponseDto, HttpStatus.OK);
     }

@@ -20,4 +20,7 @@ public class CurrentIdsResponseDto {
 
     @ApiModelProperty(example = "galleryId", value = "galleryId")
     private int galleryId;
+
+    @ApiModelProperty(example = "etcId", value = "etcId")
+    private int etcId;
 }
