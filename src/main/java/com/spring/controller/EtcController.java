@@ -26,9 +26,9 @@ public class EtcController {
     private final FileStorageService fileStorageService;
 
     @ApiResponses({
-            @ApiResponse(code = 200, message = "books를 반환 해줌.", response = DefaultResponseDto.class)
+            @ApiResponse(code = 200, message = "etc를 반환 해줌.", response = DefaultResponseDto.class)
     })
-    @ApiOperation(value = "책들을 반환해주는 api", notes = "")
+    @ApiOperation(value = "etc들을 반환해주는 api", notes = "")
     @GetMapping("/getEtc/{page}/{size}")
     public ResponseEntity<?> getBooks(
             @ApiParam(value = "page", required = true, example = "page") @PathVariable("page") int page,
