@@ -23,4 +23,7 @@ public class CurrentIdsResponseDto {
 
     @ApiModelProperty(example = "etcId", value = "etcId")
     private int etcId;
+
+    @ApiModelProperty(example = "newsId", value = "newsId")
+    private int newsId;
 }

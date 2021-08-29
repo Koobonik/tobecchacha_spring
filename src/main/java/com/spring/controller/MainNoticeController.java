@@ -1,10 +1,8 @@
 package com.spring.controller;
 
-import com.spring.dto.requestDto.ArtistsCreateRequestDto;
 import com.spring.dto.requestDto.MainNoticeCreateRequestDto;
 import com.spring.dto.responseDto.CurrentIdsResponseDto;
 import com.spring.dto.responseDto.DefaultResponseDto;
-import com.spring.model.Gallery;
 import com.spring.service.*;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -13,9 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Log4j2
 @RestController
@@ -31,6 +26,7 @@ public class MainNoticeController {
     private final GalleryService galleryService;
     private final EducationService educationService;
     private final EtcService etcService;
+    private final NewsService newsService;
 
     @ApiResponses({
             @ApiResponse(code = 200, message = "공지 반환 해줌.", response = DefaultResponseDto.class)
@@ -80,6 +76,7 @@ public class MainNoticeController {
                 .educationId(educationService.findAllPageSize(0,1).get(0).getId())
                 .galleryId(galleryService.findAllPageSize(0,1).get(0).getId())
                 .etcId(etcService.findAllPageSize(0,1).get(0).getId())
+                .newsId(newsService.findAllPageSize(0,1).get(0).getId())
                 .build();
         return new ResponseEntity<>(currentIdsResponseDto, HttpStatus.OK);
     }
