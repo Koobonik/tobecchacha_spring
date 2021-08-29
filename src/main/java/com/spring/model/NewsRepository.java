@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface NewsRepository extends JpaRepository<News, Integer> {
-    @Query(value = "select p from Etc p where p.id = :id and p.isShow = true")
+    @Query(value = "select p from News p where p.id = :id and p.isShow = true")
     News findById(int id);
 
 //    @Query(value = "select p from Books p where p.isShow = true )
