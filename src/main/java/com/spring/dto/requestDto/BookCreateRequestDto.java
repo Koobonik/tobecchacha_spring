@@ -91,6 +91,7 @@ public class BookCreateRequestDto {
                 .edition(edition)
                 .editionNumber(editionNumber)
                 .createdDate(createdDate)
+                .pages(pages)
                 .build();
     }
 
