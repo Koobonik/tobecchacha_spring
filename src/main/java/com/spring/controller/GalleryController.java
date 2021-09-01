@@ -64,7 +64,17 @@ public class GalleryController {
                                         @RequestParam(value = "images7", required = false) MultipartFile images7,
                                         @RequestParam(value = "images8", required = false) MultipartFile images8,
                                         @RequestParam(value = "images9", required = false) MultipartFile images9,
-                                        @RequestParam(value = "images10", required = false) MultipartFile images10
+                                        @RequestParam(value = "images10", required = false) MultipartFile images10,
+                                           @RequestParam(value = "images11", required = false) MultipartFile images11,
+                                           @RequestParam(value = "images12", required = false) MultipartFile images12,
+                                           @RequestParam(value = "images13", required = false) MultipartFile images13,
+                                           @RequestParam(value = "images14", required = false) MultipartFile images14,
+                                           @RequestParam(value = "images15", required = false) MultipartFile images15,
+                                           @RequestParam(value = "images16", required = false) MultipartFile images16,
+                                           @RequestParam(value = "images17", required = false) MultipartFile images17,
+                                           @RequestParam(value = "images18", required = false) MultipartFile images18,
+                                           @RequestParam(value = "images19", required = false) MultipartFile images19,
+                                           @RequestParam(value = "images20", required = false) MultipartFile images20
     ){
         List<String> images_string = new ArrayList<>();
         if(images1 != null && !images1.isEmpty()){
@@ -96,6 +106,36 @@ public class GalleryController {
         }
         if(images10 != null && !images10.isEmpty()){
             images_string.add(fileStorageService.saveFile(images10).getFileDownloadUri());
+        }
+        if(images11 != null && !images11.isEmpty()){
+            images_string.add(fileStorageService.saveFile(images11).getFileDownloadUri());
+        }
+        if(images12 != null && !images12.isEmpty()){
+            images_string.add(fileStorageService.saveFile(images12).getFileDownloadUri());
+        }
+        if(images13 != null && !images13.isEmpty()){
+            images_string.add(fileStorageService.saveFile(images13).getFileDownloadUri());
+        }
+        if(images14 != null && !images14.isEmpty()){
+            images_string.add(fileStorageService.saveFile(images14).getFileDownloadUri());
+        }
+        if(images15 != null && !images15.isEmpty()){
+            images_string.add(fileStorageService.saveFile(images15).getFileDownloadUri());
+        }
+        if(images16 != null && !images16.isEmpty()){
+            images_string.add(fileStorageService.saveFile(images16).getFileDownloadUri());
+        }
+        if(images17 != null && !images17.isEmpty()){
+            images_string.add(fileStorageService.saveFile(images17).getFileDownloadUri());
+        }
+        if(images18 != null && !images18.isEmpty()){
+            images_string.add(fileStorageService.saveFile(images18).getFileDownloadUri());
+        }
+        if(images19 != null && !images19.isEmpty()){
+            images_string.add(fileStorageService.saveFile(images19).getFileDownloadUri());
+        }
+        if(images20 != null && !images20.isEmpty()){
+            images_string.add(fileStorageService.saveFile(images20).getFileDownloadUri());
         }
         return new ResponseEntity<>(galleryService.createGallery(galleryCreateRequestDto.toEntity(images_string)), HttpStatus.OK);
     }
