@@ -26,6 +26,9 @@ public class Education extends BaseTimeEntity {
     private String title; // 프로그램 제목
 
     @Column(nullable = true)
+    private String information; // 프로그램 정보 (연락처)
+
+    @Column(nullable = true)
     private String subTitle; // 부제목
 
     @Column(nullable = false)

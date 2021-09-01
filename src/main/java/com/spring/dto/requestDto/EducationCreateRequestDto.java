@@ -28,6 +28,9 @@ public class EducationCreateRequestDto {
     @ApiModelProperty(example = "심리적 독립을 위한 스케치", value = "교육 타이틀", required = true)
     private String title;
 
+    @ApiModelProperty(example = "교육문의 : 문화온도 씨도시", value = "교육 정보", required = false)
+    private String information;
+
     @ApiModelProperty(example = "다함께 재밌게 놀아보아요", value = "교육 서브 타이틀", required = false)
     private String subTitle;
 
@@ -38,13 +41,14 @@ public class EducationCreateRequestDto {
     private String withWho; // 누구랑 함께 하는지... (일단 컬럼으로 넣어주자..)
 
     @ApiModelProperty(example = "구로아이쿱생협에서 진행한 1인 독립가구를 위한 드로잉 프로그램", value = "프로그램 개요", required = true)
-    private String introduction; // 책 일련번호
+    private String introduction;
 
 
     public Education toEntity(List<String> imagesParam){
         return Education.builder()
                 .price(price)
                 .title(title)
+                .information(information)
                 .subTitle(subTitle)
                 .content(content)
                 .withWho(withWho)
