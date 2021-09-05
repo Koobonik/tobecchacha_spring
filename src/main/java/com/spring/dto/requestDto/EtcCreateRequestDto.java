@@ -34,6 +34,9 @@ public class EtcCreateRequestDto {
     @ApiModelProperty(example = "노동의 땀방울을 춤과 흥으로 표현한 정인하 그림책\n밥춤과 어우러진 전시", value = "etc 대한 설명", required = true)
     private String content;
 
+    @ApiModelProperty(example = "김성애", value = "이름 적기", required = true)
+    private String withWho;
+
 
 
     public Etc toEntity(List<String> imagesParam){
@@ -43,6 +46,7 @@ public class EtcCreateRequestDto {
                 .subTitle(subTitle)
                 .informationContent(informationContent)
                 .content(content)
+                .withWho(withWho)
                 .images(imagesParam)
                 .isShow(true)
                 .build();

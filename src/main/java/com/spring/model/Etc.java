@@ -30,6 +30,9 @@ public class Etc extends BaseTimeEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content; // 책 내용
 
+    @Column(nullable = true)
+    private String withWho = ""; // 누가 했는지
+
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(nullable = false)
     private List<String> images = new ArrayList<>(); // 이미지들
