@@ -36,7 +36,7 @@ public class EtcCreateRequestDto {
     @ApiModelProperty(example = "김성애", value = "이름 적기", required = true)
     private String withWho;
 
-    @ApiModelProperty(example = "https://youtube.com", value = "비디오 링크들", required = true)
+    @ApiModelProperty(example = "https://youtube.com", value = "비디오 링크들", required = false)
     private List<String> videoLinks;
 
 
