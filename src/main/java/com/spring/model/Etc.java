@@ -37,6 +37,10 @@ public class Etc extends BaseTimeEntity {
     @Column(nullable = false)
     private List<String> images = new ArrayList<>(); // 이미지들
 
+    @ElementCollection(fetch = FetchType.LAZY)
+    @Column(nullable = false)
+    private List<String> videoLinks = new ArrayList<>(); // 이미지들 텍스트
+
     @Column(nullable = true)
     private Boolean isShow = true;
 

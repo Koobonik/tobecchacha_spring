@@ -1,6 +1,5 @@
 package com.spring.dto.requestDto;
 
-import com.spring.model.Books;
 import com.spring.model.Etc;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -37,6 +36,9 @@ public class EtcCreateRequestDto {
     @ApiModelProperty(example = "김성애", value = "이름 적기", required = true)
     private String withWho;
 
+    @ApiModelProperty(example = "https://youtube.com", value = "비디오 링크들", required = true)
+    private List<String> videoLinks;
+
 
 
     public Etc toEntity(List<String> imagesParam){
@@ -47,6 +49,7 @@ public class EtcCreateRequestDto {
                 .informationContent(informationContent)
                 .content(content)
                 .withWho(withWho)
+                .videoLinks(videoLinks)
                 .images(imagesParam)
                 .isShow(true)
                 .build();
