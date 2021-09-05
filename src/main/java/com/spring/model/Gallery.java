@@ -22,13 +22,13 @@ public class Gallery extends BaseTimeEntity {
     @Column(nullable = true)
     private int price; // 책 가격
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String title; // 책 제목
 
-    @Column(nullable = true)
+    @Column(nullable = true, columnDefinition = "TEXT")
     private String subTitle; // 부제목
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String content; // 책 내용
 
     @Column(nullable = false)

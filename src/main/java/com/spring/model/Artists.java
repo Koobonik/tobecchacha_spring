@@ -21,7 +21,7 @@ public class Artists extends BaseTimeEntity {
     @Column(nullable = false)
     private String createdDate; // 아티스트 데뷔일?
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String name; // 아티스트 데뷔일?
 
     @Column(nullable = false)
@@ -37,7 +37,7 @@ public class Artists extends BaseTimeEntity {
     @Column(nullable = false)
     private List<String> images = new ArrayList<>(); // 대표작 이미지들
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String introduce; // 책 제본 ex 상철
 
     @Column(nullable = true)

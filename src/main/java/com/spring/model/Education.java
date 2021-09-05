@@ -22,22 +22,22 @@ public class Education extends BaseTimeEntity {
     @Column(nullable = true)
     private int price = 0; // 프로그램 가격
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String title; // 프로그램 제목
 
-    @Column(nullable = true)
+    @Column(nullable = true, columnDefinition = "TEXT")
     private String information; // 프로그램 정보 (연락처)
 
-    @Column(nullable = true)
+    @Column(nullable = true, columnDefinition = "TEXT")
     private String subTitle; // 부제목
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String content; // 프로그램 내용
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String withWho; // 누구랑 함께 하는지... (일단 컬럼으로 넣어주자..)
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String introduction; // 프로그램 개요
 
     @ElementCollection(fetch = FetchType.EAGER)

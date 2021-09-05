@@ -18,16 +18,16 @@ public class News extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String title; // 책 제목
 
     @Column(columnDefinition = "TEXT")
     private String subTitle = ""; // 소제목
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String informationContent; // 책 내용
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String content; // 책 내용
 
     @ElementCollection(fetch = FetchType.EAGER)

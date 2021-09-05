@@ -19,7 +19,7 @@ public class MainNotice extends BaseTimeEntity {
     @Column(nullable = false)
     private String image; // 공지 이미지
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description; // 공지에 대한 설명
 
     @Column(nullable = true)

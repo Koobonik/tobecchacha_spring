@@ -22,13 +22,13 @@ public class Books extends BaseTimeEntity {
 
     private int price; // 책 가격
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String title; // 책 제목
 
     @Column(columnDefinition = "TEXT")
     private String subTitle = ""; // 소제목
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String content; // 책 내용
 
     @Column(nullable = false)
@@ -57,9 +57,9 @@ public class Books extends BaseTimeEntity {
     private String bookBinding; // 책 제본 ex 상철
     @Column(nullable = true)
     private int pages;
-    @Column(nullable = true)
+    @Column(nullable = true, columnDefinition = "TEXT")
     private String tableOfContent;
-    @Column(nullable = true)
+    @Column(nullable = true, columnDefinition = "TEXT")
     private String nPayLink;
 
     @Column(nullable = true)

@@ -35,6 +35,7 @@ public class GalleryCreateRequestDto {
     private String content;
 
     @ApiModelProperty(example = "김성애", value = "성명", required = true)
+
     private String createdWho;
 
     @ApiModelProperty(example = "김성애", value = "구매 문의", required = true)
