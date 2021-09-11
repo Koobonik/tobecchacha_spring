@@ -21,11 +21,13 @@ public class FileInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(unique = true)
+    @Column(unique = true, columnDefinition = "TEXT")
     private String name;
 
+    @Column(unique = true, columnDefinition = "TEXT")
     private String downloadUri;
 
+    @Column(columnDefinition = "TEXT")
     private String type;
 
     private Long size;
