@@ -41,7 +41,7 @@ public class EtcCreateRequestDto {
 
 
 
-    public Etc toEntity(List<String> imagesParam){
+    public Etc toEntity(List<String> imagesParam, String mp4File){
         log.info("toEntity 실행");
         return Etc.builder()
                 .title(title)
@@ -50,6 +50,7 @@ public class EtcCreateRequestDto {
                 .content(content)
                 .withWho(withWho)
                 .videoLinks(videoLinks)
+                .mp4File(mp4File)
                 .images(imagesParam)
                 .isShow(true)
                 .build();

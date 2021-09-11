@@ -54,6 +54,7 @@ public class EtcController {
     @PostMapping("/createEtc")
     @RequestMapping(value = "/createEtc", method = {RequestMethod.POST})
     public ResponseEntity<?> createBook(@ModelAttribute EtcCreateRequestDto etcCreateRequestDto,
+                                        @RequestParam(value = "mp4File", required = false) MultipartFile mp4File,
                                         @RequestParam(value = "images1") MultipartFile images1,
                                         @RequestParam(value = "images2", required = false) MultipartFile images2,
                                         @RequestParam(value = "images3", required = false) MultipartFile images3,
@@ -65,6 +66,10 @@ public class EtcController {
                                         @RequestParam(value = "images9", required = false) MultipartFile images9,
                                         @RequestParam(value = "images10", required = false) MultipartFile images10
     ){
+        String mp4FileUrl = null;
+        if(mp4File != null){
+            mp4FileUrl = fileStorageService.saveFile(mp4File).getFileDownloadUri();
+        }
         List<String> images_string = new ArrayList<>();
         if(images1 != null && !images1.isEmpty()){
             images_string.add(fileStorageService.saveFile(images1).getFileDownloadUri());
@@ -96,6 +101,6 @@ public class EtcController {
         if(images10 != null && !images10.isEmpty()){
             images_string.add(fileStorageService.saveFile(images10).getFileDownloadUri());
         }
-        return new ResponseEntity<>(etcService.createEtc(etcCreateRequestDto.toEntity(images_string)), HttpStatus.OK);
+        return new ResponseEntity<>(etcService.createEtc(etcCreateRequestDto.toEntity(images_string, mp4FileUrl)), HttpStatus.OK);
     }
 }

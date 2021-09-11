@@ -33,6 +33,9 @@ public class Etc extends BaseTimeEntity {
     @Column(nullable = true)
     private String withWho = ""; // 누가 했는지
 
+    @Column(nullable = true, columnDefinition = "TEXT")
+    private String mp4File = ""; // 동영상 링크
+
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(nullable = false)
     private List<String> images = new ArrayList<>(); // 이미지들
